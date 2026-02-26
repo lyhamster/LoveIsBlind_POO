@@ -1,0 +1,344 @@
+@font-face {
+    font-family: "paperMono";
+    src: url("assets/fonts/PaperMono-Regular.otf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #FFDFC8;
+    border-left: 30px solid;
+    border-image: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
+    border-right: 30px solid;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 20px;
+    background-color: #FFDFC8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    align-items: center;
+    
+}
+.logoWrapper {
+    background-color: #FF8F3D;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+a {
+    font-family: "paperMono";
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.pod {
+    width: 190px;
+    height: 340px;
+    border-radius: 152px 152px 52px 52px;
+    background-color:  #444444;
+    /* background-image: 
+        linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
+        radial-gradient(#00000000 60%, #ffffff2c 95%),
+        conic-gradient(from 180deg, #212121 0%, #4C4C4C 100%);  */
+    border: 2px solid #7D7D7D;
+}
+
+@property --accentLG {
+    syntax: '<color>';
+    initial-value:#00000000; 
+    inherits: true;
+}
+
+@property --mainLG {
+    syntax: '<color>';
+    initial-value: #ff6e9744 ;
+    inherits: true;
+}
+
+@property --secondaryLG {
+    syntax: '<color>';
+    initial-value: #ffffff46 ;
+    inherits: true; 
+}
+
+@property --mainRG {
+    syntax: '<color>';
+    initial-value: #00000000 ;
+    inherits: true; 
+}
+
+@property --secondaryRG {
+    syntax: '<color>';
+    initial-value: #ffffff3f ;
+    inherits: true; 
+}
+
+@property --mainCG {
+    syntax: '<color>';
+    initial-value: hsl(0, 0%, 13%) ;
+    inherits: true; 
+}
+
+@property --secondaryCG {
+    syntax: '<color>';
+    initial-value: hsl(0, 0%, 30%) ;
+    inherits: true; 
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: true;
+}
+
+/* 
+.joining {
+    first frame 
+    background:
+        linear-gradient(#00000010 0%, #ff6e9742, #ffffff6e),
+        radial-gradient(farthest-side,#0000002d 10%,#ffffff71 100%),
+        conic-gradient(from 180deg, #fbfbfb9d, #988d8d);
+
+    2nd frame  
+    border: 2px solid #fbfbfbe0;
+    background-image:
+        linear-gradient(#f7f7f7c0, #ff6e9754, #ffffff96),
+        conic-gradient(from 180deg, #fbfbfb, #cabcbc);
+        position: relative; 
+        overflow: hidden;  
+
+    3rd frame 
+    /* border: 2px solid #fbfbfbe0;
+    background-image: 
+        conic-gradient(from 180deg, #fbfbfb, #cabcbca3), 
+        linear-gradient(#fef9f999, #ff6e97, #ffffffcc);
+    overflow: hidden;
+    position: relative; 
+}
+
+/* .joining::after {
+    content: "";
+    transform: rotate(60deg);
+    background-image: radial-gradient(#00000014 20%, #ffffff00 60%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+} */
+/* 3rd frame */
+/* .joining::after {
+    content: "";
+    transform: rotate(60deg);
+    background-image: radial-gradient(#fef9f980 21%, #ffffff00 40%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+} */
+
+/* .presence{
+    background-image: 
+        linear-gradient(#0000000f, #ff6e9747, #ffffff00), 
+        radial-gradient(#00000000 60%, #ffffff8a 104%), 
+        conic-gradient(from 180deg, #ff8f3d, #e47321);
+    border: 2px solid #ffb078f9;
+    position: relative;
+} */
+
+/* .talking {
+    background-image: 
+        conic-gradient(from 180deg, #ff8f3dc2, #e47321d1), 
+        radial-gradient(#00000000 60%, #ffffff 103%), 
+        linear-gradient(#00000000, #ff6e97, #ffffff);
+    border: 2px solid #ffb078f9;
+    overflow: hidden;
+    position: relative;
+}  */
+
+/*     background-image: 
+    conic-gradient(from 180deg, #ff8f3d, #e47321), 
+    linear-gradient(#00000000, #ff6e97, #ffffff); */
+/* .talking::after {
+    content: "";
+    transform: rotate(-60deg);
+    background-image: 
+        radial-gradient(#0000002b 13%, #ffffff00 60%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}   */
+
+@keyframes thinking {
+
+    30%, 100% {
+        --angle: -60deg;
+        --mainRG: #514c4c49; 
+        --secondaryRG: #f3f3f300;        
+    }
+}
+@keyframes thinkingRight {
+    50%, 100% {
+        --angle: -60deg;
+        --accentLG: #00000000;
+        --mainLG: #ff6e974a;
+        --secondaryLG: #ffffff1a;
+
+        --mainRG: #0000001a;
+        --secondaryRG: #ffffff00;
+
+        --mainCG: #d0ff78;
+        --secondaryCG: #7ce421cf;
+
+        border: 2px solid #D0FF78;
+    }
+}
+
+@keyframes thikingWrong {
+    50% {
+        --angle: -60deg;
+        --mainRG: #00000040;
+        --secondaryRG: #ffffff00;
+    } 
+
+    90%,100% {    
+        --angle: 180deg;
+        --mainCG: #ff7a7a;
+        --secondaryCG: #e42721;   
+
+         border: 2px solid #FF7878;
+    }
+}
+
+.thinking {
+    --accentLG: #00000000;
+    --mainLG: #ff6e9740;
+    --secondaryLG: #ffffff00;
+    
+    --mainRG: #514c4c3b; 
+    --secondaryRG: #514c4c00; 
+
+    --mainCG: hsl(25, 97%, 55%);
+
+    --secondaryCG: #f9a467;
+    --angle: 0deg;
+
+    background-image:
+        linear-gradient(var(--accentLG) 3%, var(--mainLG), var(--secondaryLG)),
+        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
+
+    border: 2px solid #ffb078bd;
+    position: relative;
+    overflow: hidden;
+    
+    animation: thinkingRight 3500ms 3000ms linear forwards;
+    animation: thikingWrong 5000ms 3000ms  linear forwards;
+}
+
+.thinking::after {
+    content: "";
+    transform: rotate(var(--angle));
+    background-image: 
+        radial-gradient(var(--mainRG) 20%, var(--secondaryRG) 60%); 
+    position: absolute;
+    width: 100%;
+    height: 100%; 
+    animation: thinking 2500ms ease-in forwards;
+} 
+
+/* .thinking_right::after {
+    content: "";
+    transform: rotate(var(--angle));
+    background-image: radial-gradient(var(--mainRG) 20%, var(--secondaryRG) 66%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}  */
+
+/* .thinking_wrong::after {
+    content: "";
+    transform: rotate(var(--angle));
+    background-image: radial-gradient(var(--mainRG) 10%, var(--secondaryRG) 61%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}   */
+
+/* .matching {
+    /* first frame */
+    /* background-image:
+        linear-gradient(#0000001f, #ff6e9746, #ffffff77),
+        radial-gradient(#00000000 20%, #ffffff28 100%),
+        conic-gradient(from 180deg,#FF8F3D 24%, #FFA617);  */
+
+     /* 2nd frame  */
+    /* background-image: 
+        linear-gradient(#00000025, #ff6e973d, #ffffff2c),
+        radial-gradient(#00000000 20%, #ffffff2d 90%),
+        conic-gradient(from 180deg, #FFBA87 24%, #ffa617);
+
+    background-image:
+        linear-gradient(#00000000, #ff6e9742, #ffffff2d),
+        radial-gradient(#00000000 20%, #ffc28d44 100%),
+        conic-gradient(from 180deg,#FFBA873D 24%,#FFA617); */
+/* }    */ 
+
+/* .matching {
+    --accentLG: #0000001f;
+    --mainLG: #ff6e9746;
+    --secondaryLG: #ffffff77;
+    --mainRG: #00000000; 
+    --secondaryRG: #ffffff28;
+    --secondaryCG: #FFA617;
+    --mainCG: #FF8F3D;
+
+    background-image:
+        linear-gradient(var(--accentLG) 3%, var(--mainLG), var(--secondaryLG)),
+        radial-gradient(var(--mainRG) 20%, var(--secondaryRG) 100%),  
+        conic-gradient(from 180deg, var(--mainCG) 24%, var(--secondaryCG));
+
+    animation: matching 2500ms 1 forwards;
+    border: 2px solid #ffb078;
+}  */
+
+/* @keyframes matching {
+    50% {
+        --accentLG: #00000025;  
+        --mainLG: #ff6e973d;  
+        --secondaryLG: #ffffff2c;  
+        
+        --mainRG: #00000000;
+        --secondaryRG: #ffffff2d;
+
+        --mainCG: #FFBA87;
+        --secondaryCG: #ffa617;
+    }
+
+    80% {
+        box-shadow: 0px 0px 10px #ff8f3d
+    }
+    100% {
+        --accentLG: #00000000;
+        --mainLG: #ff6e9747;
+        --secondaryLG: #ffffff2d;
+
+        --mainRG: #0000000a;
+        --secondaryRG: #ffc28dc2;
+
+        --mainCG: #FFBA873D;
+        --secondaryCG: #FFA617;
+        box-shadow: 0px 0px 20px #ff8f3d;
+    }
+}    */
+
