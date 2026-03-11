@@ -31,6 +31,8 @@ main {
     justify-content: center;
     flex: 1;
     align-items: center;
+    flex-direction: column;
+    gap: 10px;
     
 }
 .logoWrapper {
@@ -45,18 +47,45 @@ a {
     font-size: 20px;
 }
 
-.pod {
+.pod, .off {
     width: 190px;
     height: 340px;
     border-radius: 152px 152px 52px 52px;
     background-color:  #444444;
-    /* background-image: 
+    background-image: 
         linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
-        radial-gradient(#00000000 60%, #ffffff2c 95%),
-        conic-gradient(from 180deg, #212121 0%, #4C4C4C 100%);  */
+        radial-gradient(var(--mainRG) 60%, var(--secondaryRG) 95%),
+        conic-gradient(from 180deg, var(--mainCG) 0%, var(--secondaryCG) 100%); 
     border: 2px solid #7D7D7D;
 }
 
+.dialogue, .multipleChoiceInput, input {
+    font-family: "paperMono";
+    font-size: 15px;
+}
+
+input, .multipleChoiceInput, .selectedAnswer {
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
+    color: #F9DAC3;
+    text-align: center;
+    outline: thin;
+}
+
+.selectedAnswer {
+    background-color: #7b288e;
+}
+
+.theme_alt {
+    background-color: #58116A;
+    color: #FB9334;
+}
+
+.multipleChoiceInputWrapper {
+    display: flex;
+    gap: 10px;
+}
 @property --accentLG {
     syntax: '<color>';
     initial-value:#00000000; 
@@ -89,13 +118,13 @@ a {
 
 @property --mainCG {
     syntax: '<color>';
-    initial-value: hsl(0, 0%, 13%) ;
+    initial-value: #212121 ;
     inherits: true; 
 }
 
 @property --secondaryCG {
     syntax: '<color>';
-    initial-value: hsl(0, 0%, 30%) ;
+    initial-value: #4d4d4d ;
     inherits: true; 
 }
 
@@ -105,80 +134,114 @@ a {
     inherits: true;
 }
 
-/* 
-.joining {
-    first frame 
-    background:
-        linear-gradient(#00000010 0%, #ff6e9742, #ffffff6e),
-        radial-gradient(farthest-side,#0000002d 10%,#ffffff71 100%),
-        conic-gradient(from 180deg, #fbfbfb9d, #988d8d);
-
-    2nd frame  
-    border: 2px solid #fbfbfbe0;
-    background-image:
-        linear-gradient(#f7f7f7c0, #ff6e9754, #ffffff96),
-        conic-gradient(from 180deg, #fbfbfb, #cabcbc);
-        position: relative; 
-        overflow: hidden;  
-
-    3rd frame 
-    /* border: 2px solid #fbfbfbe0;
-    background-image: 
-        conic-gradient(from 180deg, #fbfbfb, #cabcbca3), 
-        linear-gradient(#fef9f999, #ff6e97, #ffffffcc);
-    overflow: hidden;
-    position: relative; 
+@property --integer {
+    syntax: '<number>';
+    initial-value: 1;
+    inherits: true;
 }
 
-/* .joining::after {
-    content: "";
-    transform: rotate(60deg);
-    background-image: radial-gradient(#00000014 20%, #ffffff00 60%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-} */
-/* 3rd frame */
-/* .joining::after {
-    content: "";
-    transform: rotate(60deg);
-    background-image: radial-gradient(#fef9f980 21%, #ffffff00 40%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-} */
+@keyframes joining {
+    40% {
+        --mainRG: #00000014;
+        --secondaryRG: #ffffff00;
+    }
 
-/* .presence{
+    50%, 100% {
+        --angle: 60deg;
+        --mainCG: #fbfbfb;
+        --secondaryCG: #cabcbca3;
+        --secondaryLG: #ffffffcc;
+    }
+}
+.joining {
+    --accentLG: #00000000;
+    --mainLG: #ff6e9742;
+    --secondaryLG: #ffffff6e;
+    --mainRG: #0000001b; 
+    --secondaryRG: #ffffff00;
+    --secondaryCG: #988d8d;
+    --mainCG: #fbfbfb9d;
+
+    background:
+        linear-gradient(var(--accentLG) 0%, var(--mainLG), var(--secondaryLG)),
+        radial-gradient(var(--mainRG) 10%,var(--secondaryRG) 60%),
+        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
+    overflow: hidden;
+    position: relative;
+
+    border: 2px solid #fbfbfbe0;
+    animation: joining 3000ms infinite;
+}
+
+.joining::after {
+    content: "";
+    transform: rotate(var(--angle));
+    background-image: radial-gradient(var(--mainRG) 10%, var(--secondaryRG) 60%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+} 
+
+@keyframes presence {
+    0% {
+        box-shadow: 0px 0px 20px #6f1468f7;
+    }
+    100% {
+        box-shadow: 0px 0px 40px #6f1468f7;
+    }
+}
+.presence {
     background-image: 
         linear-gradient(#0000000f, #ff6e9747, #ffffff00), 
         radial-gradient(#00000000 60%, #ffffff8a 104%), 
         conic-gradient(from 180deg, #ff8f3d, #e47321);
     border: 2px solid #ffb078f9;
     position: relative;
-} */
+    animation: presence 3000ms ease-in-out forwards;
+} 
 
-/* .talking {
+@keyframes talking { 
+    20% {
+        --mainCG: #ff8f3d;
+        --secondaryCG: #e47321;
+        --accentLG: #00000000;
+        --mainLG: #ff6e97;
+        --secondaryLG: #ffffff;
+    }
+
+    40%,100% {
+        --mainRG: #dd57579c;
+        --scale: 1.5;
+    }
+}
+.talking {
+    --accentLG: #00000000;
+    --mainLG: #ff6e97;
+    --secondaryLG: #ffffff;
+    --mainRG: #d82fe196; 
+    --secondaryRG: #fefefe00;
+    --secondaryCG: #e47321d1;
+    --mainCG: #ff8f3dc2;
+
     background-image: 
-        conic-gradient(from 180deg, #ff8f3dc2, #e47321d1), 
-        radial-gradient(#00000000 60%, #ffffff 103%), 
-        linear-gradient(#00000000, #ff6e97, #ffffff);
+        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG)), 
+        radial-gradient(var(--mainRG) 60%, var(--secondaryRG) 100%), 
+        linear-gradient(var(--accentLG),var(--mainLG),var(--secondaryLG));
     border: 2px solid #ffb078f9;
     overflow: hidden;
     position: relative;
-}  */
+    animation: talking 3000ms ease-in-out infinite;
+} 
 
-/*     background-image: 
-    conic-gradient(from 180deg, #ff8f3d, #e47321), 
-    linear-gradient(#00000000, #ff6e97, #ffffff); */
-/* .talking::after {
+.talking::after {
     content: "";
-    transform: rotate(-60deg);
+    transform: scale(var(--integer));
     background-image: 
-        radial-gradient(#0000002b 13%, #ffffff00 60%);
+        radial-gradient(var(--mainRG) 13%, var(--secondaryRG) 60%);
     position: absolute;
     width: 100%;
     height: 100%;
-}   */
+}  
 
 @keyframes thinking {
 
@@ -190,7 +253,6 @@ a {
 }
 @keyframes thinkingRight {
     50%, 100% {
-        --angle: -60deg;
         --accentLG: #00000000;
         --mainLG: #ff6e974a;
         --secondaryLG: #ffffff1a;
@@ -205,23 +267,20 @@ a {
     }
 }
 
-@keyframes thikingWrong {
+@keyframes thinkingWrong {
     50% {
-        --angle: -60deg;
         --mainRG: #00000040;
         --secondaryRG: #ffffff00;
     } 
 
     90%,100% {    
-        --angle: 180deg;
         --mainCG: #ff7a7a;
         --secondaryCG: #e42721;   
-
          border: 2px solid #FF7878;
     }
-}
+} 
 
-.thinking {
+.thinking, .thinkingRight {
     --accentLG: #00000000;
     --mainLG: #ff6e9740;
     --secondaryLG: #ffffff00;
@@ -241,9 +300,30 @@ a {
     border: 2px solid #ffb078bd;
     position: relative;
     overflow: hidden;
-    
     animation: thinkingRight 3500ms 3000ms linear forwards;
-    animation: thikingWrong 5000ms 3000ms  linear forwards;
+}
+
+.thinking, .thinkingWrong {
+    --accentLG: #00000000;
+    --mainLG: #ff6e9740;
+    --secondaryLG: #ffffff00;
+    
+    --mainRG: #514c4c3b; 
+    --secondaryRG: #514c4c00; 
+
+    --mainCG: hsl(25, 97%, 55%);
+
+    --secondaryCG: #f9a467;
+    --angle: 0deg;
+
+    background-image:
+        linear-gradient(var(--accentLG) 3%, var(--mainLG), var(--secondaryLG)),
+        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
+
+    border: 2px solid #ffb078bd;
+    position: relative;
+    overflow: hidden;
+    animation: thinkingWrong 5000ms 3000ms  linear forwards;
 }
 
 .thinking::after {
@@ -257,44 +337,24 @@ a {
     animation: thinking 2500ms ease-in forwards;
 } 
 
-/* .thinking_right::after {
+.thinkingRight::after {
     content: "";
-    transform: rotate(var(--angle));
     background-image: radial-gradient(var(--mainRG) 20%, var(--secondaryRG) 66%);
     position: absolute;
     width: 100%;
     height: 100%;
-}  */
+} 
 
-/* .thinking_wrong::after {
+.thinkingWrong::after {
     content: "";
     transform: rotate(var(--angle));
     background-image: radial-gradient(var(--mainRG) 10%, var(--secondaryRG) 61%);
     position: absolute;
     width: 100%;
     height: 100%;
-}   */
+}  
 
-/* .matching {
-    /* first frame */
-    /* background-image:
-        linear-gradient(#0000001f, #ff6e9746, #ffffff77),
-        radial-gradient(#00000000 20%, #ffffff28 100%),
-        conic-gradient(from 180deg,#FF8F3D 24%, #FFA617);  */
-
-     /* 2nd frame  */
-    /* background-image: 
-        linear-gradient(#00000025, #ff6e973d, #ffffff2c),
-        radial-gradient(#00000000 20%, #ffffff2d 90%),
-        conic-gradient(from 180deg, #FFBA87 24%, #ffa617);
-
-    background-image:
-        linear-gradient(#00000000, #ff6e9742, #ffffff2d),
-        radial-gradient(#00000000 20%, #ffc28d44 100%),
-        conic-gradient(from 180deg,#FFBA873D 24%,#FFA617); */
-/* }    */ 
-
-/* .matching {
+.matching {
     --accentLG: #0000001f;
     --mainLG: #ff6e9746;
     --secondaryLG: #ffffff77;
@@ -310,9 +370,9 @@ a {
 
     animation: matching 2500ms 1 forwards;
     border: 2px solid #ffb078;
-}  */
+} 
 
-/* @keyframes matching {
+@keyframes matching {
     50% {
         --accentLG: #00000025;  
         --mainLG: #ff6e973d;  
@@ -340,5 +400,4 @@ a {
         --secondaryCG: #FFA617;
         box-shadow: 0px 0px 20px #ff8f3d;
     }
-}    */
-
+} 
