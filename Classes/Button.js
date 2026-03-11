@@ -20,6 +20,7 @@ export default class Button {
         bttn.addEventListener("click",(e) => {
             this.#callback(e); 
         });
+        
         return bttn;
     };
 };

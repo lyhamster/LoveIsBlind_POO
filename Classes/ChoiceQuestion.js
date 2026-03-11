@@ -13,10 +13,9 @@ class ChoiceQuestion extends Question {
         this.answers = answers; 
         this.callback = callback;
         this.hasMultiplesAnswers = hasMultiplesAnswers;
-        this.arr = [];
-        this.positiveValue = 0;
-        this.negativeValue = 0;
+        this.selectedAnswersArr = [];
     }
+
     ask() {
        const main = document.querySelector("main");
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
@@ -24,52 +23,47 @@ class ChoiceQuestion extends Question {
 
        this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
-            if (this.hasMultiplesAnswers) {
-                const target = e.target;
-                target.classList.add("selectedAnswer");
-                this.arr.push(answer.isTrue);
-            }  else {
-                this.#removedButton();
-            }
-            if (answer.isTrue) {
-                new Pod().changeState("thinkingRight");
-            } else {
-                new Pod().changeState("thinkingWrong");
-            }
+                if (this.hasMultiplesAnswers) {
+                    const target = e.target;
+                    target.classList.add("selectedAnswer");
+                    this.selectedAnswersArr.push(answer.isTrue);
+                } else {
+                    this.#removeButton();
+                }
             }).createElement();
-         
+
             multipleChoiceInputWrapper.appendChild(bttn);  
             main.appendChild(multipleChoiceInputWrapper);
-       })    
+        })    
 
         if (this.hasMultiplesAnswers) {
             const validateBttn = document.createElement("button");
             validateBttn.classList.add("multipleChoiceInput");
             validateBttn.textContent = "enter";
-
-            validateBttn.addEventListener("click", () => {
-                this.#removedButton();
-                this.arr.forEach((value) => {
-                    if (value === true) {
-                        this.positiveValue++
-                    } else {
-                        this.negativeValue++
-                    }
+         
+            validateBttn.addEventListener("click", () => {  
+                const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => {
+                    return truthyAnswer === true;
                 })
-                if (this.positiveValue > this.negativeValue) {
+
+                const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
+
+                if (truthyAnswers.length > negativeAnswers) {
                     new Pod().changeState("thinkingRight");
                 } else {
-                    new Pod().changeState("thinkingWrong");
+                new Pod().changeState("thinkingWrong");
                 }
+
+                this.#removeButton();
             });
             main.appendChild(validateBttn);
         }
     }
 
-    #removedButton() {
-        const bttn = document.querySelectorAll("button");
-            bttn.forEach((bouton) => {
-                bouton.remove()    
+    #removeButton() {
+        const bttnElements = document.querySelectorAll("button");
+            bttnElements.forEach((bttn) => {
+                bttn.remove()    
             })
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
