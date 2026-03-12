@@ -2,6 +2,7 @@ export default class Question {
     constructor (label) {
         this.label = label;
         this.element = document.createElement("div");
+        this.main = document.querySelector("main");
     }
 
     createElement () {      
@@ -10,6 +11,8 @@ export default class Question {
         return this.element;
     }
 
-    ask() {}
+    ask() {
+        this.main.appendChild(this.createElement());
+    }
 }
 

@@ -17,12 +17,24 @@ class ChoiceQuestion extends Question {
     }
 
     ask() {
-       const main = document.querySelector("main");
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
-       main.appendChild(this.createElement());
+       super.ask();
+       
+       this.handleAnswers(main,multipleChoiceInputWrapper);
+       if (this.hasMultiplesAnswers) {
+        this.handleMultipleAnswers(main)
+       }
+    }
 
-       this.answers.forEach((answer) => {
+    handleAnswers(mainElement,wrapperElement) {
+        this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
+                if (answer.isTrue) {
+                    new Pod().changeState("thinkingRight");
+                } else {
+                    new Pod().changeState("thinkingWrong")
+                }
+
                 if (this.hasMultiplesAnswers) {
                     const target = e.target;
                     target.classList.add("selectedAnswer");
@@ -31,58 +43,50 @@ class ChoiceQuestion extends Question {
                     this.#removeButton();
                 }
             }).createElement();
-
-            multipleChoiceInputWrapper.appendChild(bttn);  
-            main.appendChild(multipleChoiceInputWrapper);
+        wrapperElement.appendChild(bttn);  
+        mainElement.appendChild(wrapperElement);
         })    
+    }
 
-        if (this.hasMultiplesAnswers) {
-            const validateBttn = document.createElement("button");
-            validateBttn.classList.add("multipleChoiceInput");
-            validateBttn.textContent = "enter";
-         
-            validateBttn.addEventListener("click", () => {  
-                const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => {
-                    return truthyAnswer === true;
-                })
+    handleMultipleAnswers(mainElement) {
+        const validateBttn = new Button("Enter", () => {
+            const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => {
+                return truthyAnswer === true;
+            })
+            const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
 
-                const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
-
-                if (truthyAnswers.length > negativeAnswers) {
-                    new Pod().changeState("thinkingRight");
-                } else {
+            if (truthyAnswers.length >= negativeAnswers) {
+                new Pod().changeState("thinkingRight");
+            } else {
                 new Pod().changeState("thinkingWrong");
-                }
-
-                this.#removeButton();
-            });
-            main.appendChild(validateBttn);
-        }
+            }
+            this.#removeButton();
+        }).createElement()
+        mainElement.appendChild(validateBttn);
     }
 
     #removeButton() {
         const bttnElements = document.querySelectorAll("button");
             bttnElements.forEach((bttn) => {
-                bttn.remove()    
+                bttn.remove();    
             })
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
     }
 }
 
-const question2 = new ChoiceQuestion ("tia un taf ?", 
-    [
-        new Answer("oui",true),
-        new Answer("non",false),
-        new Answer("oui",true),
-        new Answer("oui",true),
-    ],
-    () => {
+// const question2 = new ChoiceQuestion ("tia un taf ?", 
+//     [
+//         new Answer("oui",true),
+//         new Answer("non",false),
+//         new Answer("oui",true),
+//         new Answer("oui",true),
+//     ],
+//     () => {
+//     },
+//     false,
+// );
 
-    },
-    true,
-);
-
-question2.ask();
+// question2.ask();
 
    

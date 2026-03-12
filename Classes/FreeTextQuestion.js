@@ -4,24 +4,39 @@ import Pod from "./Pod.js";
 import Question from "./Question.js";
 
 class FreeTextQuestion extends Question {
-    constructor(label,answer) {
+    constructor(label,callback) {
         super(label)
-        this.answer = answer;
+        this.callback = callback;
     }
 
     ask () {
-        const pod = document.querySelector(".pod");
-        const inputAnswer = new Input(this.answer).createElement();
-        pod.insertAdjacentElement("afterend", inputAnswer);
+        const inputAnswer = new Input((e) =>{
+            if (e) {
+                const dialogue = document.querySelector(".dialogue");
+                const input = document.querySelector("input");
+
+                dialogue.remove();
+                input.remove();
+            }
+            if(this.callback(e)) {
+                new Pod().changeState("thinkingRight");
+            } else {
+                new Pod().changeState("thinkingWrong")
+            }
+        }).createElement();
+        super.ask();
+        this.main.appendChild(inputAnswer);
     }
 }
 
-// const question1 = new FreeTextQuestion("quel age as-tu?", (age) => {
-//     const answerValue = age.target.value
-//     if (parseInt(answerValue) === 29) {
-//         console.log("youpi")
-//     }
-// })
-// question1.ask();
+const question1 = new FreeTextQuestion("quel age as-tu?", (age) => {
+    const answerValue = age.target.value
+    if (parseInt(answerValue) >= 28) {
+        return true
+    } else { 
+        return false
+    }
+})
+question1.ask();
 
 
