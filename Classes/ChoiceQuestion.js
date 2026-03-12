@@ -9,7 +9,7 @@ class ChoiceQuestion extends Question {
     hasMultiplesAnswers;
 
     constructor (label, answers, callback, hasMultiplesAnswers) {
-        super (label)
+        super (label);
         this.answers = answers; 
         this.callback = callback;
         this.hasMultiplesAnswers = hasMultiplesAnswers;
@@ -19,8 +19,7 @@ class ChoiceQuestion extends Question {
     ask() {
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
        super.ask();
-       
-       this.handleAnswers(main,multipleChoiceInputWrapper);
+       this.handleAnswers(main, multipleChoiceInputWrapper);
        if (this.hasMultiplesAnswers) {
         this.handleMultipleAnswers(main)
        }
@@ -32,7 +31,7 @@ class ChoiceQuestion extends Question {
                 if (answer.isTrue) {
                     new Pod().changeState("thinkingRight");
                 } else {
-                    new Pod().changeState("thinkingWrong")
+                    new Pod().changeState("thinkingWrong");
                 }
 
                 if (this.hasMultiplesAnswers) {
@@ -50,9 +49,7 @@ class ChoiceQuestion extends Question {
 
     handleMultipleAnswers(mainElement) {
         const validateBttn = new Button("Enter", () => {
-            const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => {
-                return truthyAnswer === true;
-            })
+            const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => truthyAnswer);
             const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
 
             if (truthyAnswers.length >= negativeAnswers) {
@@ -61,7 +58,7 @@ class ChoiceQuestion extends Question {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
-        }).createElement()
+        }).createElement();
         mainElement.appendChild(validateBttn);
     }
 
