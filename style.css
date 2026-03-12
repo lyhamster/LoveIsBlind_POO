@@ -5,8 +5,8 @@
 
 :root {
     --main-color: #FFDFC8;
-    --main-linearGradient: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
-    --main-fontBg: black;
+    --main-linear-gradient: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
+    --main-font-bg: black;
 }
 
 * {
@@ -18,7 +18,7 @@ body {
     min-height: 100vh;
     background-color: var(--main-color);
     border-left: 30px solid;
-    border-image: var(--main-linearGradient);
+    border-image: var(--main-linear-gradient);
     border-right: 30px solid;
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@ a {
 }
 
 input, .multipleChoiceInput, .selectedAnswer {
-    background-color: var(--main-fontBg);
+    background-color: var(--main-font-bg);
     padding: 10px;
     border-radius: 10px;
     color: #F9DAC3;
