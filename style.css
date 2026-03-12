@@ -3,6 +3,12 @@
     src: url("assets/fonts/PaperMono-Regular.otf");
 }
 
+:root {
+    --main-color: #FFDFC8;
+    --main-linearGradient: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
+    --main-fontBg: black;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,9 +16,9 @@
 
 body {
     min-height: 100vh;
-    background-color: #FFDFC8;
+    background-color: var(--main-color);
     border-left: 30px solid;
-    border-image: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
+    border-image: var(--main-linearGradient);
     border-right: 30px solid;
     display: flex;
     flex-direction: column;
@@ -20,7 +26,7 @@ body {
 
 header {
     padding: 20px;
-    background-color: #FFDFC8;
+    background-color: var(--main-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -65,7 +71,7 @@ a {
 }
 
 input, .multipleChoiceInput, .selectedAnswer {
-    background-color: black;
+    background-color: var(--main-fontBg);
     padding: 10px;
     border-radius: 10px;
     color: #F9DAC3;
@@ -94,37 +100,37 @@ input, .multipleChoiceInput, .selectedAnswer {
 
 @property --mainLG {
     syntax: '<color>';
-    initial-value: #ff6e9744 ;
+    initial-value: #ff6e9744;
     inherits: true;
 }
 
 @property --secondaryLG {
     syntax: '<color>';
-    initial-value: #ffffff46 ;
+    initial-value: #ffffff46;
     inherits: true; 
 }
 
 @property --mainRG {
     syntax: '<color>';
-    initial-value: #00000000 ;
+    initial-value: #00000000;
     inherits: true; 
 }
 
 @property --secondaryRG {
     syntax: '<color>';
-    initial-value: #ffffff3f ;
+    initial-value: #ffffff3f;
     inherits: true; 
 }
 
 @property --mainCG {
     syntax: '<color>';
-    initial-value: #212121 ;
+    initial-value: #212121;
     inherits: true; 
 }
 
 @property --secondaryCG {
     syntax: '<color>';
-    initial-value: #4d4d4d ;
+    initial-value: #4d4d4d;
     inherits: true; 
 }
 
@@ -153,6 +159,7 @@ input, .multipleChoiceInput, .selectedAnswer {
         --secondaryLG: #ffffffcc;
     }
 }
+
 .joining {
     --accentLG: #00000000;
     --mainLG: #ff6e9742;
@@ -164,7 +171,7 @@ input, .multipleChoiceInput, .selectedAnswer {
 
     background:
         linear-gradient(var(--accentLG) 0%, var(--mainLG), var(--secondaryLG)),
-        radial-gradient(var(--mainRG) 10%,var(--secondaryRG) 60%),
+        radial-gradient(var(--mainRG) 10%, var(--secondaryRG) 60%),
         conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
     overflow: hidden;
     position: relative;
@@ -190,6 +197,7 @@ input, .multipleChoiceInput, .selectedAnswer {
         box-shadow: 0px 0px 40px #6f1468f7;
     }
 }
+
 .presence {
     background-image: 
         linear-gradient(#0000000f, #ff6e9747, #ffffff00), 
@@ -226,7 +234,7 @@ input, .multipleChoiceInput, .selectedAnswer {
     background-image: 
         conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG)), 
         radial-gradient(var(--mainRG) 60%, var(--secondaryRG) 100%), 
-        linear-gradient(var(--accentLG),var(--mainLG),var(--secondaryLG));
+        linear-gradient(var(--accentLG), var(--mainLG), var(--secondaryLG));
     border: 2px solid #ffb078f9;
     overflow: hidden;
     position: relative;
@@ -244,13 +252,13 @@ input, .multipleChoiceInput, .selectedAnswer {
 }  
 
 @keyframes thinking {
-
     30%, 100% {
         --angle: -60deg;
         --mainRG: #514c4c49; 
         --secondaryRG: #f3f3f300;        
     }
 }
+
 @keyframes thinkingRight {
     50%, 100% {
         --accentLG: #00000000;
@@ -386,8 +394,9 @@ input, .multipleChoiceInput, .selectedAnswer {
     }
 
     80% {
-        box-shadow: 0px 0px 10px #ff8f3d
+        box-shadow: 0px 0px 10px #ff8f3d;
     }
+
     100% {
         --accentLG: #00000000;
         --mainLG: #ff6e9747;
