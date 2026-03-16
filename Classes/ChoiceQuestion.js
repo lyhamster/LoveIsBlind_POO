@@ -3,44 +3,46 @@ import Button from "./Button.js";
 import Pod from "./Pod.js";
 import Question from "./Question.js";
 
-class ChoiceQuestion extends Question {
+export default class ChoiceQuestion extends Question {
     answers;
     callback;
     hasMultiplesAnswers;
+    onAnswer;
 
-    constructor (label, answers, callback, hasMultiplesAnswers) {
+    constructor (label, answers, hasMultiplesAnswers) {
         super (label);
         this.answers = answers; 
-        this.callback = callback;
         this.hasMultiplesAnswers = hasMultiplesAnswers;
         this.selectedAnswersArr = [];
     }
 
-    ask() {
+    ask(onAnswer) {
+       const main = document.querySelector("main"); 
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
        super.ask();
+       this.onAnswer = onAnswer;
        this.handleAnswers(main, multipleChoiceInputWrapper);
        if (this.hasMultiplesAnswers) {
         this.handleMultipleAnswers(main)
-       }
+       };
     }
 
     handleAnswers(mainElement,wrapperElement) {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
-                if (answer.isTrue) {
-                    new Pod().changeState("thinkingRight");
-                } else {
-                    new Pod().changeState("thinkingWrong");
-                }
-
                 if (this.hasMultiplesAnswers) {
                     const target = e.target;
-                    target.classList.add("selectedAnswer");
+                    target.classList.toggle("selectedAnswer");
                     this.selectedAnswersArr.push(answer.isTrue);
-                } else {
+                } else if (!this.hasMultiplesAnswers && answer.isTrue) {
+                    new Pod().changeState("thinkingRight");
                     this.#removeButton();
-                }
+                } else {
+                    new Pod().changeState("thinkingWrong");
+                    console.log("thinking wrong??")
+                    this.#removeButton();
+                };
+            this.onAnswer();
             }).createElement();
         wrapperElement.appendChild(bttn);  
         mainElement.appendChild(wrapperElement);
@@ -58,6 +60,7 @@ class ChoiceQuestion extends Question {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
+            this.onAnswer();
         }).createElement();
         mainElement.appendChild(validateBttn);
     }
@@ -79,9 +82,7 @@ class ChoiceQuestion extends Question {
 //         new Answer("oui",true),
 //         new Answer("oui",true),
 //     ],
-//     () => {
-//     },
-//     false,
+//     true,
 // );
 
 // question2.ask();
