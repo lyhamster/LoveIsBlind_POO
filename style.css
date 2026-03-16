@@ -308,7 +308,7 @@ input, .multipleChoiceInput, .selectedAnswer {
     border: 2px solid #ffb078bd;
     position: relative;
     overflow: hidden;
-    animation: thinkingRight 3500ms 3000ms linear forwards;
+    animation: thinkingRight 2500ms 2000ms linear forwards;
 }
 
 .thinking, .thinkingWrong {
@@ -331,7 +331,7 @@ input, .multipleChoiceInput, .selectedAnswer {
     border: 2px solid #ffb078bd;
     position: relative;
     overflow: hidden;
-    animation: thinkingWrong 5000ms 3000ms  linear forwards;
+    animation: thinkingWrong 2000ms 1000ms  linear forwards;
 }
 
 .thinking::after {

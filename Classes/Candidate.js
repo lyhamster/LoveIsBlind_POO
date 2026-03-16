@@ -4,12 +4,11 @@ import FreeTextQuestion from "./FreeTextQuestion.js";
 
 class Candidate {
     interestLevel = 0;
-   
+    indexNb = 0
     constructor(name, age, questions) {
         this.name = name;
         this.age = age;
         this.questions = questions;
-        this.nb = 0;
     }
 
     display() {
@@ -21,11 +20,12 @@ class Candidate {
     } 
 
     nextQuestion() {
-        this.questions[this.nb].ask((e) => {
+        this.questions[this.indexNb].ask((e) => {
+            
             setTimeout(() => {
-                console.log(this.nb)
-                this.nb++
-                this.nextQuestion();    
+                this.indexNb++
+                this.nextQuestion();
+                new Pod().changeState("talking")   
             }, 2000)
         });
     }

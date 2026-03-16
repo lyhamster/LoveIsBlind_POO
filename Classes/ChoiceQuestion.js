@@ -34,7 +34,7 @@ export default class ChoiceQuestion extends Question {
                     const target = e.target;
                     target.classList.toggle("selectedAnswer");
                     this.selectedAnswersArr.push(answer.isTrue);
-                } else if (!this.hasMultiplesAnswers && answer.isTrue) {
+                } else if (answer.isTrue) {
                     new Pod().changeState("thinkingRight");
                     this.#removeButton();
                 } else {

@@ -4,6 +4,7 @@ import Pod from "./Pod.js";
 import Question from "./Question.js";
 
 export default class FreeTextQuestion extends Question {
+    
     constructor(label, callback) {
         super(label)
         this.callback = callback;
