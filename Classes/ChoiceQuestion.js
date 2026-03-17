@@ -22,8 +22,9 @@ export default class ChoiceQuestion extends Question {
        super.ask();
        this.onAnswer = onAnswer;
        this.handleAnswers(main, multipleChoiceInputWrapper);
+
        if (this.hasMultiplesAnswers) {
-        this.handleMultipleAnswers(main)
+        this.handleMultipleAnswers(main);
        };
     }
 
@@ -34,19 +35,20 @@ export default class ChoiceQuestion extends Question {
                     const target = e.target;
                     target.classList.toggle("selectedAnswer");
                     this.selectedAnswersArr.push(answer.isTrue);
-                } else if (answer.isTrue) {
+                } else if (answer.isTrue) { 
+                    this.onAnswer(answer.isTrue);
                     new Pod().changeState("thinkingRight");
                     this.#removeButton();
                 } else {
+                    this.onAnswer(answer.isTrue);
                     new Pod().changeState("thinkingWrong");
-                    console.log("thinking wrong??")
                     this.#removeButton();
                 };
-            this.onAnswer();
+           
             }).createElement();
         wrapperElement.appendChild(bttn);  
         mainElement.appendChild(wrapperElement);
-        })    
+        });    
     }
 
     handleMultipleAnswers(mainElement) {
@@ -60,7 +62,7 @@ export default class ChoiceQuestion extends Question {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
-            this.onAnswer();
+            this.onAnswer(truthyAnswers.length >= negativeAnswers);
         }).createElement();
         mainElement.appendChild(validateBttn);
     }

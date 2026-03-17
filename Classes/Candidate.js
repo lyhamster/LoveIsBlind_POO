@@ -4,7 +4,10 @@ import FreeTextQuestion from "./FreeTextQuestion.js";
 
 class Candidate {
     interestLevel = 0;
-    indexNb = 0
+    indexNb = 0;
+    positiveAnswer = 0;
+    negativeAnswer = 0;
+    totalAnswer = 0;
     constructor(name, age, questions) {
         this.name = name;
         this.age = age;
@@ -17,21 +20,28 @@ class Candidate {
         nameElement.textContent = this.name;
         nameElement.classList.add("dialogue");
         pod.insertAdjacentElement("afterend", nameElement);
-    } 
+    }
 
     nextQuestion() {
-        this.questions[this.indexNb].ask((e) => {
-            
+        console.log(this.totalAnswer)
+        this.questions[this.indexNb].ask((answerIsTrue) => {
+            if (answerIsTrue) {
+                this.interestLevel += 10;
+                this.positiveAnswer++;
+            } else {
+                this.interestLevel -= 10;
+                this.negativeAnswer++;
+            }
+            this.totalAnswer = this.positiveAnswer + this.negativeAnswer;
             setTimeout(() => {
-                this.indexNb++
+                this.indexNb++;
                 this.nextQuestion();
-                new Pod().changeState("talking")   
-            }, 2000)
+            }, 2000);
         });
-    }
+    };
 }
 
-const paul = new Candidate ("Paul Mescal",null, [
+const paul = new Candidate ("Paul Mescal", 28, [
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
         const answerValue = childNb.target.value;
         if (parseInt(answerValue) === 0) {

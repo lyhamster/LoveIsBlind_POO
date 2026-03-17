@@ -4,7 +4,7 @@ import Pod from "./Pod.js";
 import Question from "./Question.js";
 
 export default class FreeTextQuestion extends Question {
-    
+
     constructor(label, callback) {
         super(label)
         this.callback = callback;
@@ -27,7 +27,7 @@ export default class FreeTextQuestion extends Question {
             } else {
                 new Pod().changeState("thinkingWrong");  
             }
-            onAnswer();
+            onAnswer(this.callback(e));
         }).createElement();
         super.ask();
         this.main.appendChild(inputAnswer);
