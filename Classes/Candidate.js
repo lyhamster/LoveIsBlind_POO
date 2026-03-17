@@ -32,7 +32,7 @@ class Candidate {
                 this.interestLevel -= 10;
                 this.negativeAnswer++;
             }
-            this.totalAnswer = this.positiveAnswer + this.negativeAnswer;
+            
             setTimeout(() => {
                 this.indexNb++;
                 this.nextQuestion();

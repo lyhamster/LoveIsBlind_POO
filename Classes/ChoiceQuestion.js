@@ -21,21 +21,18 @@ export default class ChoiceQuestion extends Question {
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
        super.ask();
        this.onAnswer = onAnswer;
-       this.handleAnswers(main, multipleChoiceInputWrapper);
-
+      
        if (this.hasMultiplesAnswers) {
-        this.handleMultipleAnswers(main);
-       };
-    }
+        this.handleMultipleAnswers(main, multipleChoiceInputWrapper);
+       } else {
+        this.handleAnswers(main, multipleChoiceInputWrapper); 
+       }
+    };
 
     handleAnswers(mainElement,wrapperElement) {
         this.answers.forEach((answer) => {
-            const bttn = new Button(answer.label, (e) => {
-                if (this.hasMultiplesAnswers) {
-                    const target = e.target;
-                    target.classList.toggle("selectedAnswer");
-                    this.selectedAnswersArr.push(answer.isTrue);
-                } else if (answer.isTrue) { 
+            const bttn = new Button(answer.label, () => {
+                if (answer.isTrue) { 
                     this.onAnswer(answer.isTrue);
                     new Pod().changeState("thinkingRight");
                     this.#removeButton();
@@ -44,14 +41,24 @@ export default class ChoiceQuestion extends Question {
                     new Pod().changeState("thinkingWrong");
                     this.#removeButton();
                 };
-           
             }).createElement();
-        wrapperElement.appendChild(bttn);  
-        mainElement.appendChild(wrapperElement);
-        });    
-    }
+            wrapperElement.appendChild(bttn);  
+        }); 
+        mainElement.appendChild(wrapperElement);     
+    };
 
-    handleMultipleAnswers(mainElement) {
+    handleMultipleAnswers(mainElement,wrapperElement) {
+        this.answers.forEach((answer) => {
+            const bttn = new Button(answer.label, (e) => {
+                const target = e.target;
+                target.classList.toggle("selectedAnswer");
+                this.selectedAnswersArr.push(answer.isTrue);
+            }).createElement();
+            wrapperElement.appendChild(bttn);  
+        });
+        mainElement.appendChild(wrapperElement);
+        
+        
         const validateBttn = new Button("Enter", () => {
             const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => truthyAnswer);
             const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
@@ -65,17 +72,17 @@ export default class ChoiceQuestion extends Question {
             this.onAnswer(truthyAnswers.length >= negativeAnswers);
         }).createElement();
         mainElement.appendChild(validateBttn);
-    }
+    };
 
     #removeButton() {
         const bttnElements = document.querySelectorAll("button");
             bttnElements.forEach((bttn) => {
                 bttn.remove();    
-            })
+            });
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
-    }
-}
+    };
+};
 
 // const question2 = new ChoiceQuestion ("tia un taf ?", 
 //     [
