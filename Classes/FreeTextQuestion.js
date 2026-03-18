@@ -4,11 +4,11 @@ import Pod from "./Pod.js";
 import Question from "./Question.js";
 
 export default class FreeTextQuestion extends Question {
-
-    constructor(label, callback) {
+    constructor(label, callback, isImpactSpike) {
         super(label)
         this.callback = callback;
         this.nb = 0;
+        this.isImpactSpike = isImpactSpike;
     }
 
     ask (onAnswer) {
@@ -22,26 +22,15 @@ export default class FreeTextQuestion extends Question {
                 input.remove();
             }
    
-            if (this.callback(e)) {
+            if (this.callback(e) || this.isImpactSpike === true) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");  
             }
-            onAnswer(this.callback(e));
+            onAnswer(this.callback(e), this.isImpactSpike);
         }).createElement();
         super.ask();
         this.main.appendChild(inputAnswer);
     }
 }
-
-// const question1 = new FreeTextQuestion("quel age as-tu?", (age) => {
-//     const answerValue = age.target.value
-//     if (parseInt(answerValue) >= 28) {
-//         return true;
-//     } else { 
-//         return false;
-//     }
-// })
-// question1.ask();
-
 

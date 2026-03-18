@@ -4,6 +4,8 @@ import FreeTextQuestion from "./FreeTextQuestion.js";
 
 class Candidate {
     interestLevel = 0;
+    favouriteAnswer = 0;
+    ickAnswer = 0;
     indexNb = 0;
     positiveAnswer = 0;
     negativeAnswer = 0;
@@ -23,48 +25,59 @@ class Candidate {
     }
 
     nextQuestion() {
-        console.log(this.totalAnswer)
-        this.questions[this.indexNb].ask((answerIsTrue) => {
-            if (answerIsTrue) {
-                this.interestLevel += 10;
+        this.questions[this.indexNb].ask((answerIsTrue, answerIsImpactSpike) => {
+            if (answerIsTrue && answerIsImpactSpike === true) {
+                console.log("fav answer")
+                this.favouriteAnswer +=10;
                 this.positiveAnswer++;
-            } else {
-                this.interestLevel -= 10;
+            } 
+            if (!answerIsTrue && answerIsImpactSpike === false) {
+                console.log("ickkk");
+                this.ickAnswer -= 10;
                 this.negativeAnswer++;
             }
             
+            if (answerIsTrue) {
+                this.interestLevel += 5;
+            } else {
+                this.interestLevel -=5;
+                this.negativeAnswer++;
+            }
             setTimeout(() => {
                 this.indexNb++;
                 this.nextQuestion();
             }, 2000);
         });
     };
-}
+};
 
 const paul = new Candidate ("Paul Mescal", 28, [
-    new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
-        const answerValue = childNb.target.value;
-        if (parseInt(answerValue) === 0) {
-            return true;
-        } else {
-            return false;
-        }}),
-    new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", true),
-        new Answer ("montagne", false),
-    ],
-    false),
-    new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", true),
-        new Answer ("non", false),
-    ],
-    false),
     new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
         new Answer ("Past Lives", true),
         new Answer ("Pearl", true),
         new Answer ("AfterSun", true),
-        new Answer ("Whiplash", false),
+        new Answer ("Whiplash", false,false),
     ],true),
 ])
 paul.display();
 paul.nextQuestion();
+
+// [
+//     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
+//         const answerValue = childNb.target.value;
+//         if (parseInt(answerValue) === 0) {
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }, false),
+//     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
+//         new Answer ("ville", true, null),
+//         new Answer ("montagne", false, true),
+//     ],
+//     false),
+//     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
+//         new Answer ("oui", true, true),
+//         new Answer ("non", false, null),
+//     ],
+//     false),

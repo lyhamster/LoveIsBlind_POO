@@ -8,12 +8,14 @@ export default class ChoiceQuestion extends Question {
     callback;
     hasMultiplesAnswers;
     onAnswer;
+    selectedAnswersArr = [];
+    filteredSelectedAnswers;
+    ickAnswer = [];
 
     constructor (label, answers, hasMultiplesAnswers) {
         super (label);
         this.answers = answers; 
         this.hasMultiplesAnswers = hasMultiplesAnswers;
-        this.selectedAnswersArr = [];
     }
 
     ask(onAnswer) {
@@ -32,15 +34,15 @@ export default class ChoiceQuestion extends Question {
     handleAnswers(mainElement,wrapperElement) {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, () => {
-                if (answer.isTrue) { 
+                if (answer.isTrue || answer.isImpactSpike === true) { 
                     this.onAnswer(answer.isTrue);
                     new Pod().changeState("thinkingRight");
                     this.#removeButton();
                 } else {
-                    this.onAnswer(answer.isTrue);
+                    this.onAnswer(answer.isTrue, answer.isImpactSpike);
                     new Pod().changeState("thinkingWrong");
                     this.#removeButton();
-                };
+                }
             }).createElement();
             wrapperElement.appendChild(bttn);  
         }); 
@@ -50,15 +52,29 @@ export default class ChoiceQuestion extends Question {
     handleMultipleAnswers(mainElement,wrapperElement) {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
-                const target = e.target;
-                target.classList.toggle("selectedAnswer");
-                this.selectedAnswersArr.push(answer.isTrue);
+                const target = e.target;     
+                if (target.classList.contains("selectedAnswer") && answer.isTrue === true) {
+                    target.classList.remove("selectedAnswer");
+                    const indexOfTrue = this.selectedAnswersArr.indexOf(true);
+                    this.selectedAnswersArr.splice(indexOfTrue,1); 
+                } else if (target.classList.contains("selectedAnswer")) {
+                    target.classList.remove("selectedAnswer");
+                    const indexofFalse = this.selectedAnswersArr.indexOf(false);
+                    this.selectedAnswersArr.splice(indexofFalse,1);
+                }
+                else {
+                    target.classList.add("selectedAnswer");
+                    this.selectedAnswersArr.push(answer.isTrue);
+                }    
+                // this.selectedAnswersArr.forEach((truthy) => {
+                //     if (truthy === answer.isImpactSpike) {
+                        
+                //     }
+                // })
             }).createElement();
-            wrapperElement.appendChild(bttn);  
+            wrapperElement.appendChild(bttn);   
         });
         mainElement.appendChild(wrapperElement);
-        
-        
         const validateBttn = new Button("Enter", () => {
             const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => truthyAnswer);
             const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
@@ -69,8 +85,9 @@ export default class ChoiceQuestion extends Question {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
-            this.onAnswer(truthyAnswers.length >= negativeAnswers);
-        }).createElement();
+            this.onAnswer(truthyAnswers.length >= negativeAnswers, this.isImpactSpike);
+        }).createElement(); 
+
         mainElement.appendChild(validateBttn);
     };
 
@@ -83,17 +100,5 @@ export default class ChoiceQuestion extends Question {
         dialogue.remove();
     };
 };
-
-// const question2 = new ChoiceQuestion ("tia un taf ?", 
-//     [
-//         new Answer("oui",true),
-//         new Answer("non",false),
-//         new Answer("oui",true),
-//         new Answer("oui",true),
-//     ],
-//     true,
-// );
-
-// question2.ask();
 
    
