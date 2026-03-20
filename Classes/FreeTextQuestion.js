@@ -4,11 +4,9 @@ import Pod from "./Pod.js";
 import Question from "./Question.js";
 
 export default class FreeTextQuestion extends Question {
-    constructor(label, callback, isImpactSpike) {
+    constructor(label, callback) {
         super(label)
         this.callback = callback;
-        this.nb = 0;
-        this.isImpactSpike = isImpactSpike;
     }
 
     ask (onAnswer) {
@@ -22,12 +20,12 @@ export default class FreeTextQuestion extends Question {
                 input.remove();
             }
    
-            if (this.callback(e) || this.isImpactSpike === true) {
+            if (this.callback(e)) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");  
             }
-            onAnswer(this.callback(e), this.isImpactSpike);
+            onAnswer(this.callback(e));
         }).createElement();
         super.ask();
         this.main.appendChild(inputAnswer);

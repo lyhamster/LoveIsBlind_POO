@@ -1,7 +1,11 @@
 export default class Answer {
-    constructor (label, value, impactSpike) {
+    static positive = 5;
+    static negative = -5;
+    static ick = -20;
+    static favourite = 10;
+
+    constructor (label, level = 0) {
         this.label = label;
-        this.isTrue = value;
-        this.isImpactSpike = impactSpike;
+        this.level = level;
     }   
 }
