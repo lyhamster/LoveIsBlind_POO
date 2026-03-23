@@ -5,7 +5,8 @@ import Pod from "./Pod.js";
 
 class Candidate {
     indexNb = 0;
-    
+    interestLevel = 0;
+
     constructor(name, age, questions) {
         this.name = name;
         this.age = age;
@@ -21,8 +22,9 @@ class Candidate {
     }
 
     nextQuestion() {
-        this.questions[this.indexNb].ask(() => {
+        this.questions[this.indexNb].ask((answerPoints) => {
             setTimeout(() => {
+                this.interestLevel += (answerPoints);
                 this.indexNb++;
                 this.nextQuestion();
             }, 2000);
@@ -34,9 +36,9 @@ const paul = new Candidate ("Paul Mescal", 28, [
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
         const answerValue = childNb.target.value;
         if (parseInt(answerValue) === 0) {
-            return true;
+            return 5;
         } else {
-            return;
+            return -5;
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [

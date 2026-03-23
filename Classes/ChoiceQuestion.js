@@ -57,7 +57,6 @@ export default class ChoiceQuestion extends Question {
                     this.scoreLevel += answer.level;
                   
                 }
-                console.log(this.scoreLevel)
             }).createElement();
             wrapperElement.appendChild(bttn);   
         });
