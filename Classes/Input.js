@@ -1,7 +1,7 @@
 export default class Input {
-    #callback;
-    constructor (callback) {
-        this.#callback = callback;
+    #onEnter;
+    constructor (onEnter) {
+        this.#onEnter = onEnter;
     };
 
     createElement() {
@@ -9,7 +9,7 @@ export default class Input {
 
         input.addEventListener("keypress", (e) => {
             if (e.key === "Enter") { 
-                this.#callback(e);
+                this.#onEnter(e);
             };
         });
         return input;

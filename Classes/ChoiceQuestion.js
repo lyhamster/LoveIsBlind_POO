@@ -3,87 +3,84 @@ import Button from "./Button.js";
 import Pod from "./Pod.js";
 import Question from "./Question.js";
 
-class ChoiceQuestion extends Question {
+export default class ChoiceQuestion extends Question {
     answers;
     callback;
     hasMultiplesAnswers;
-
-    constructor (label, answers, callback, hasMultiplesAnswers) {
+    onAnswer;
+    scoreLevel = 0;
+    constructor (label, answers, hasMultiplesAnswers) {
         super (label);
         this.answers = answers; 
-        this.callback = callback;
         this.hasMultiplesAnswers = hasMultiplesAnswers;
-        this.selectedAnswersArr = [];
     }
 
-    ask() {
+    ask(onAnswer) {
+       const main = document.querySelector("main"); 
        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
        super.ask();
-       this.handleAnswers(main, multipleChoiceInputWrapper);
+       this.onAnswer = onAnswer;
+      
        if (this.hasMultiplesAnswers) {
-        this.handleMultipleAnswers(main)
+        this.handleMultipleAnswers(main, multipleChoiceInputWrapper);
+       } else {
+        this.handleAnswers(main, multipleChoiceInputWrapper); 
        }
-    }
+    };
 
     handleAnswers(mainElement,wrapperElement) {
         this.answers.forEach((answer) => {
-            const bttn = new Button(answer.label, (e) => {
-                if (answer.isTrue) {
+            const bttn = new Button(answer.label, () => {
+                if (answer.level >= 0) {
                     new Pod().changeState("thinkingRight");
+                    this.#removeButton();
                 } else {
                     new Pod().changeState("thinkingWrong");
-                }
-
-                if (this.hasMultiplesAnswers) {
-                    const target = e.target;
-                    target.classList.add("selectedAnswer");
-                    this.selectedAnswersArr.push(answer.isTrue);
-                } else {
                     this.#removeButton();
                 }
+                this.onAnswer(answer.level);
             }).createElement();
-        wrapperElement.appendChild(bttn);  
+            wrapperElement.appendChild(bttn);  
+        }); 
+        mainElement.appendChild(wrapperElement);     
+    };
+
+    handleMultipleAnswers(mainElement,wrapperElement) {
+        this.answers.forEach((answer) => {
+            const bttn = new Button(answer.label, (e) => {
+                const target = e.target; 
+                if (target.classList.contains("selectedAnswer")) {
+                    target.classList.remove("selectedAnswer");
+                    this.scoreLevel -= answer.level;
+                } else {
+                    target.classList.add("selectedAnswer");
+                    this.scoreLevel += answer.level;
+                  
+                }
+            }).createElement();
+            wrapperElement.appendChild(bttn);   
+        });
         mainElement.appendChild(wrapperElement);
-        })    
-    }
-
-    handleMultipleAnswers(mainElement) {
         const validateBttn = new Button("Enter", () => {
-            const truthyAnswers = this.selectedAnswersArr.filter((truthyAnswer) => truthyAnswer);
-            const negativeAnswers = this.selectedAnswersArr.length - truthyAnswers.length;
-
-            if (truthyAnswers.length >= negativeAnswers) {
+            if (this.scoreLevel >= 0) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
-        }).createElement();
+            this.onAnswer(this.scoreLevel);
+        }).createElement(); 
         mainElement.appendChild(validateBttn);
-    }
+    };
 
     #removeButton() {
         const bttnElements = document.querySelectorAll("button");
             bttnElements.forEach((bttn) => {
                 bttn.remove();    
-            })
+            });
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
-    }
-}
-
-// const question2 = new ChoiceQuestion ("tia un taf ?", 
-//     [
-//         new Answer("oui",true),
-//         new Answer("non",false),
-//         new Answer("oui",true),
-//         new Answer("oui",true),
-//     ],
-//     () => {
-//     },
-//     false,
-// );
-
-// question2.ask();
+    };
+};
 
    

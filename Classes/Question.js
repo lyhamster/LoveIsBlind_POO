@@ -11,7 +11,7 @@ export default class Question {
         return this.element;
     }
 
-    ask() {
+    ask(onAnswer) {
         this.main.appendChild(this.createElement());
     }
 }
