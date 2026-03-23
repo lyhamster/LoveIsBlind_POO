@@ -8,7 +8,6 @@ export default class ChoiceQuestion extends Question {
     callback;
     hasMultiplesAnswers;
     onAnswer;
-    selectedAnswersArr = [];
     scoreLevel = 0;
     constructor (label, answers, hasMultiplesAnswers) {
         super (label);
@@ -39,7 +38,7 @@ export default class ChoiceQuestion extends Question {
                     new Pod().changeState("thinkingWrong");
                     this.#removeButton();
                 }
-                this.onAnswer();
+                this.onAnswer(answer.level);
             }).createElement();
             wrapperElement.appendChild(bttn);  
         }); 
@@ -50,29 +49,27 @@ export default class ChoiceQuestion extends Question {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
                 const target = e.target; 
-                if (target.classList.contains("selectedAnswer") && answer.level) {
+                if (target.classList.contains("selectedAnswer")) {
                     target.classList.remove("selectedAnswer");
-                    const indexOfLevel = this.selectedAnswersArr.indexOf(answer.level);
-                    this.selectedAnswersArr.splice(indexOfLevel, 1);
+                    this.scoreLevel -= answer.level;
                 } else {
                     target.classList.add("selectedAnswer");
-                    this.selectedAnswersArr.push(answer.level);
+                    this.scoreLevel += answer.level;
+                  
                 }
+                console.log(this.scoreLevel)
             }).createElement();
             wrapperElement.appendChild(bttn);   
         });
         mainElement.appendChild(wrapperElement);
         const validateBttn = new Button("Enter", () => {
-            this.selectedAnswersArr.map((points) => {
-                this.scoreLevel += points;
-            })
             if (this.scoreLevel >= 0) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");
             }
             this.#removeButton();
-            this.onAnswer();
+            this.onAnswer(this.scoreLevel);
         }).createElement(); 
         mainElement.appendChild(validateBttn);
     };
