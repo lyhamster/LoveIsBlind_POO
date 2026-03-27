@@ -75,7 +75,7 @@ a {
     font-size: 15px;
 }
 
-input, .multipleChoiceInput, .selectedAnswer {
+input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     background-color: var(--main-font-bg);
     padding: 10px;
     border-radius: 10px;
@@ -436,10 +436,9 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-content: center;
-    gap: 15px;
+    gap: 34px;
     position: relative;
-    padding: 45px;
+    padding: 30px 100px;
     height: auto;
     width: auto;
 }
@@ -473,4 +472,14 @@ p {
     max-width: 50%;
     aspect-ratio: 2/3;
     height: auto;
+}
+
+.dateRecapSpace { 
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.titleUnderline {
+    text-decoration: underline;
 }
