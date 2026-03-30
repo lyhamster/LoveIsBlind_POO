@@ -4,7 +4,7 @@ export default class Pod {
             return Pod.instance;
         }
 
-        this.element = document.querySelector(".pod");
+        this.main = document.querySelector("main");
         this.state = [
             "off",
             "joining",
@@ -19,13 +19,20 @@ export default class Pod {
         return this
     }
 
+    createElement() {
+        const element = document.createElement("div");
+        element.classList.add("pod");
+        this.main.appendChild(element);
+        return element;
+    }
+
     changeState(value) {  
-        this.element.classList.remove(this.currentState);
+        this.podElement = document.querySelectorAll(".pod");
+        this.podElement.forEach((podElement)=> {
+            podElement.classList.remove(this.currentState)});
         this.currentState = value; 
-        this.element.classList.add(value);
+         this.podElement.forEach((podElement)=> {
+            podElement.classList.add(value)});
     }  
 }
-
-
-
 

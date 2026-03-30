@@ -8,6 +8,11 @@
     --main-linear-gradient: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) 1;
     --main-font-bg: black;
 }
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 * {
     margin: 0;
@@ -70,7 +75,7 @@ a {
     font-size: 15px;
 }
 
-input, .multipleChoiceInput, .selectedAnswer {
+input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     background-color: var(--main-font-bg);
     padding: 10px;
     border-radius: 10px;
@@ -92,6 +97,7 @@ input, .multipleChoiceInput, .selectedAnswer {
     display: flex;
     gap: 10px;
 }
+
 @property --accentLG {
     syntax: '<color>';
     initial-value:#00000000; 
@@ -410,3 +416,70 @@ input, .multipleChoiceInput, .selectedAnswer {
         box-shadow: 0px 0px 20px #ff8f3d;
     }
 } 
+
+/* Matching modal*/
+
+.matchingModalTitle {
+    font-family: "Prata";
+    font-size: 20px;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+
+p {
+    font-family: "paperMono";
+    font-size: 12px;
+    text-align: center;
+}
+
+.matchingModalWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 34px;
+    position: relative;
+    padding: 30px 100px;
+    height: auto;
+    width: auto;
+}
+
+.matchingModalWrapper::before {
+    content: "";
+    border-radius: 6px;
+    background: linear-gradient(to bottom right, #550E6C 0%, #DA8445 48%, #DA8445 61%, #550E6C 100%) border-box;
+    mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 1px solid #550E6C;
+    border-bottom: 1px solid #550E6C;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.dateRecapWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.matchingModalPod {
+    max-width: 50%;
+    aspect-ratio: 2/3;
+    height: auto;
+}
+
+.dateRecapSpace { 
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.titleUnderline {
+    text-decoration: underline;
+}

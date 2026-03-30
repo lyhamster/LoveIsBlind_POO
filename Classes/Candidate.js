@@ -3,9 +3,16 @@ import ChoiceQuestion from "./ChoiceQuestion.js";
 import FreeTextQuestion from "./FreeTextQuestion.js";
 import Pod from "./Pod.js";
 
-class Candidate {
+export default class Candidate {
     indexNb = 0;
     interestLevel = 0;
+    negativeCount = 0;
+    positiveCount = 0; 
+    favQuestion;
+    favAnswer; 
+    static totalQuestionLabel = "Nombres de questions répondues";
+    static positiveAnswersLabel = "Nombre de réponses vraies";
+    static negativeAnswersLabel = "Nombre de réponses fausses";
 
     constructor(name, age, questions) {
         this.name = name;
@@ -14,22 +21,52 @@ class Candidate {
     }
 
     display() {
-        const pod = document.querySelector(".pod");
+        const podElement = new Pod().createElement();
         const nameElement = document.createElement("p");
         nameElement.textContent = this.name;
         nameElement.classList.add("dialogue");
-        pod.insertAdjacentElement("afterend", nameElement);
+        podElement.insertAdjacentElement("afterend", nameElement);
     }
 
-    nextQuestion() {
+    nextQuestion() {    
+        if (this.indexNb >= this.questions.length) {
+            this.dateSummary();
+            return;
+        }
+
         this.questions[this.indexNb].ask((answerPoints) => {
             setTimeout(() => {
+                if (answerPoints < 0) {
+                    this.negativeCount++;
+                } else {
+                    this.positiveCount++;
+                }
+
+                if (answerPoints >= Answer.favourite) {
+                    this.favQuestion = this.questions[this.indexNb].label;
+                    this.questions[this.indexNb].answers.forEach((answer) => {
+                        if (answer.label && answer.level >= Answer.favourite) {
+                            this.favAnswer = answer.label;
+                        }
+                    });
+                }
+
                 this.interestLevel += (answerPoints);
                 this.indexNb++;
                 this.nextQuestion();
             }, 2000);
         });
     };
+
+    dateSummary() {
+        const summaryObj = {
+            [Candidate.totalQuestionLabel] : this.questions.length,
+            [Candidate.positiveAnswersLabel] : this.positiveCount,
+            [Candidate.negativeAnswersLabel] : this.negativeCount,
+            favQuestion : this.favQuestion,
+            favAnswer : this.favAnswer,
+        }
+    }
 };
 
 const paul = new Candidate ("Paul Mescal", 28, [
@@ -42,7 +79,7 @@ const paul = new Candidate ("Paul Mescal", 28, [
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.positive),
+        new Answer ("ville", Answer.favourite),
         new Answer ("montagne", Answer.negative),
     ], false),
     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
@@ -56,5 +93,6 @@ const paul = new Candidate ("Paul Mescal", 28, [
         new Answer ("Whiplash", Answer.ick),
     ], true),
 ]);
-paul.display();
+
+paul.display()
 paul.nextQuestion();

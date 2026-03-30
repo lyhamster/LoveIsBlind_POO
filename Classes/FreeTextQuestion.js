@@ -20,7 +20,7 @@ export default class FreeTextQuestion extends Question {
                 input.remove();
             }
    
-            if (this.callback(e)) {
+            if (this.callback(e) > 0) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");  

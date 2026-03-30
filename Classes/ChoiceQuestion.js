@@ -9,6 +9,7 @@ export default class ChoiceQuestion extends Question {
     hasMultiplesAnswers;
     onAnswer;
     scoreLevel = 0;
+    
     constructor (label, answers, hasMultiplesAnswers) {
         super (label);
         this.answers = answers; 
