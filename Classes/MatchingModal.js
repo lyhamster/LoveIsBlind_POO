@@ -22,8 +22,12 @@ class MatchingModal {
         const littlePod = new Pod().createElement();
         littlePod.classList.add("matchingModalPod");
         this.element.appendChild(littlePod);
+        const nameElement = document.createElement("p");
+        nameElement.textContent = "paul"; 
+        this.element.appendChild(nameElement)
+        
         this.element.appendChild(this.createDateSummary());
-
+        
         this.bttnElement.classList.add("multipleChoiceInput");
         this.bttnElement.textContent = "Recommencer";
         this.element.appendChild(this.bttnElement);
@@ -33,46 +37,43 @@ class MatchingModal {
     }
 
     createDateSummary() {
-        const dateRecapWrapperElement = document.createElement("div");
-        dateRecapWrapperElement.classList.add("dateRecapWrapper");
-
-        const dateRecapElement = document.createElement("div");
-        dateRecapElement.classList.add("dateRecap")
+        const dateRecapWrapperElement = this.#appendElement("div", "dateRecapWrapper", null, null, null);
+        const dateRecapElement = this.#appendElement("div", "dateRecap", "dateRecapSpace", null, dateRecapWrapperElement);
         
-        for (const [key,value] of Object.entries(this.candidateSummaryDate)) {
-            if (key === "favQuestion") {
-               break;
-            }
-            const labelElement = document.createElement("p"); 
-            labelElement.textContent = `${key} : ${value}`;
-            dateRecapElement.appendChild(labelElement);
-        }
-        dateRecapWrapperElement.appendChild(dateRecapElement);
+        [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
+            this.#appendElement("p", null, null,`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
+        })
 
-        const favAnswerElement = document.createElement("div");
-        favAnswerElement.classList.add("favAnswer");
-        const favAnswer = document.createElement("p"); 
-        favAnswer.textContent = "Reponse coup de coeur";
-        favAnswerElement.appendChild(favAnswer);
-
-        const favQuestionElement = document.createElement("p");
-        favQuestionElement.textContent = this.candidateSummaryDate.favQuestion;
-
-        favAnswerElement.appendChild(favQuestionElement);
-        dateRecapWrapperElement.appendChild(favAnswerElement)
+        const favAnswerElement = this.#appendElement("div","favAnswer","dateRecapSpace", null, dateRecapWrapperElement); 
+            this.#appendElement("p", "titleUnderline", null, "Réponse coup de coeur", favAnswerElement);
+            this.#appendElement("p", null, null,  this.candidateSummaryDate.favQuestion, favAnswerElement);
 
         return dateRecapWrapperElement;
     }
+
+    #appendElement(container, classListName, secondClassListName, elementContent, parentElement) {
+
+        const element = document.createElement(container);
+        element.textContent = elementContent;
+        element.classList.add(classListName);
+        element.classList.add(secondClassListName);
+
+        if (parentElement) {
+            return parentElement.appendChild(element)
+        } 
+        
+        return element;
+    }
+
 }
 
 const objTest = {
-    "Nombres de questions repondues": 10,
-    "Nombre de reponses vraies" : 2,
-    "Nombres de reponses fausses" : 2,
+    [Candidate.totalQuestionLabel] : 10,
+    [Candidate.positiveAnswersLabel] : 2,
+    [Candidate.negativeAnswersLabel] : 2,
     favQuestion : "tu préfères marcher en ville ou à la montagne ?", 
     favAnswer : "ville",
 };
 
 const modal = new MatchingModal(objTest);
 modal.createElement();
-// modal.createDateSummary();
