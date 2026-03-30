@@ -10,8 +10,7 @@ export default class Button {
 
     createElement() {
         const bttn = document.createElement("button");
-        bttn.classList.add("multipleChoiceInput");
-        bttn.classList.add("removeBttn");
+        bttn.classList.add(...["multipleChoiceInput","removeBttn"]);
         bttn.textContent = this.#label; 
 
         if (this.#color) {

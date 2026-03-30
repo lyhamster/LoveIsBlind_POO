@@ -3,7 +3,7 @@ import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import Pod from "./Pod.js";
 
-class MatchingModal {
+export class MatchingModal {
     constructor(candidateSummaryDate) {
         this.element = document.createElement("div");
         this.textElement = document.createElement("p");
@@ -22,6 +22,8 @@ class MatchingModal {
         const littlePod = new Pod().createElement();
         littlePod.classList.add("matchingModalPod");
         this.element.appendChild(littlePod);
+
+        // todo: dynamically get candidate name;
         const nameElement = document.createElement("p");
         nameElement.textContent = "paul"; 
         this.element.appendChild(nameElement)
@@ -37,27 +39,26 @@ class MatchingModal {
     }
 
     createDateSummary() {
-        const dateRecapWrapperElement = this.#appendElement("div", "dateRecapWrapper", null, null, null);
-        const dateRecapElement = this.#appendElement("div", "dateRecap", "dateRecapSpace", null, dateRecapWrapperElement);
+        const dateRecapWrapperElement = this.#appendElement("div", ["dateRecapWrapper"], null, null);
+        const dateRecapElement = this.#appendElement("div", ["dateRecap", "dateRecapSpace"], null, dateRecapWrapperElement);
         
         [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
-            this.#appendElement("p", null, null,`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
+            this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
         })
 
-        const favAnswerElement = this.#appendElement("div","favAnswer","dateRecapSpace", null, dateRecapWrapperElement); 
-            this.#appendElement("p", "titleUnderline", null, "Réponse coup de coeur", favAnswerElement);
-            this.#appendElement("p", null, null,  this.candidateSummaryDate.favQuestion, favAnswerElement);
+        const favAnswerElement = this.#appendElement("div",["favAnswer","dateRecapSpace"], null, dateRecapWrapperElement); 
+            this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
+            this.#appendElement("p", [null],  this.candidateSummaryDate.favQuestion, favAnswerElement);
 
         return dateRecapWrapperElement;
     }
 
-    #appendElement(container, classListName, secondClassListName, elementContent, parentElement) {
+    #appendElement(container, classListName, elementContent, parentElement) {
 
         const element = document.createElement(container);
+        element.classList.add(...classListName);
         element.textContent = elementContent;
-        element.classList.add(classListName);
-        element.classList.add(secondClassListName);
-
+       
         if (parentElement) {
             return parentElement.appendChild(element)
         } 
@@ -77,3 +78,4 @@ const objTest = {
 
 const modal = new MatchingModal(objTest);
 modal.createElement();
+

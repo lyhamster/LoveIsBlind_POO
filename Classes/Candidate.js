@@ -94,5 +94,5 @@ const paul = new Candidate ("Paul Mescal", 28, [
     ], true),
 ]);
 
-// paul.display()
-// paul.nextQuestion();
+paul.display()
+paul.nextQuestion();

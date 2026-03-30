@@ -75,7 +75,7 @@ export default class ChoiceQuestion extends Question {
     };
 
     #removeButton() {
-        const bttnElements = document.querySelectorAll(".removeBttn");
+        const bttnElements = document.querySelectorAll("button");
             bttnElements.forEach((bttn) => {
                 bttn.remove();    
             });

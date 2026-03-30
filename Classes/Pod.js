@@ -4,7 +4,6 @@ export default class Pod {
             return Pod.instance;
         }
 
-        this.element = document.createElement("div");
         this.main = document.querySelector("main");
         this.state = [
             "off",
@@ -21,20 +20,19 @@ export default class Pod {
     }
 
     createElement() {
-        this.element.classList.add("pod");
-        this.main.appendChild(this.element);
-        return this.element;
+        const element = document.createElement("div");
+        element.classList.add("pod");
+        this.main.appendChild(element);
+        return element;
     }
 
     changeState(value) {  
-        this.podElement = document.querySelector(".pod");
-        this.podElement.classList.remove(this.currentState);
+        this.podElement = document.querySelectorAll(".pod");
+        this.podElement.forEach((podElement)=> {
+            podElement.classList.remove(this.currentState)});
         this.currentState = value; 
-        this.podElement.classList.add(value);
+         this.podElement.forEach((podElement)=> {
+            podElement.classList.add(value)});
     }  
 }
 
-// const caca = new Pod();
-
-// caca.createElement()
-// caca.changeState("matching")
