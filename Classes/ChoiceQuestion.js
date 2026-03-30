@@ -9,6 +9,7 @@ export default class ChoiceQuestion extends Question {
     hasMultiplesAnswers;
     onAnswer;
     scoreLevel = 0;
+    
     constructor (label, answers, hasMultiplesAnswers) {
         super (label);
         this.answers = answers; 
@@ -74,7 +75,7 @@ export default class ChoiceQuestion extends Question {
     };
 
     #removeButton() {
-        const bttnElements = document.querySelectorAll("button");
+        const bttnElements = document.querySelectorAll(".removeBttn");
             bttnElements.forEach((bttn) => {
                 bttn.remove();    
             });

@@ -10,6 +10,9 @@ export default class Candidate {
     positiveCount = 0; 
     favQuestion;
     favAnswer; 
+    static totalQuestionLabel = "Nombres de questions répondues";
+    static positiveAnswersLabel = "Nombre de réponses vraies";
+    static negativeAnswersLabel = "Nombre de réponses fausses";
 
     constructor(name, age, questions) {
         this.name = name;
@@ -56,13 +59,13 @@ export default class Candidate {
     };
 
     dateSummary() {
-    const summaryObj = {
-        positiveCount : this.positiveCount,
-        negativeCount : this.negativeCount,
-        favQuestion : this.favQuestion,
-        favAnswer : this.favAnswer,
-    }
-    console.log(summaryObj) 
+        const summaryObj = {
+            [Candidate.totalQuestionLabel] : this.questions.length,
+            [Candidate.positiveAnswersLabel] : this.positiveCount,
+            [Candidate.negativeAnswersLabel] : this.negativeCount,
+            favQuestion : this.favQuestion,
+            favAnswer : this.favAnswer,
+        }
     }
 };
 
