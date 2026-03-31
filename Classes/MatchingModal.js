@@ -68,14 +68,4 @@ export class MatchingModal {
 
 }
 
-const objTest = {
-    [Candidate.totalQuestionLabel] : 10,
-    [Candidate.positiveAnswersLabel] : 2,
-    [Candidate.negativeAnswersLabel] : 2,
-    favQuestion : "tu préfères marcher en ville ou à la montagne ?", 
-    favAnswer : "ville",
-};
-
-const modal = new MatchingModal(objTest);
-modal.createElement();
 
