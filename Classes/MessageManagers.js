@@ -25,6 +25,3 @@ class MessageManagers {
     }
 }
 
-new Candidate ("Paul", 28).display()
-new MessageManagers().displayMessage("Paul a rejoint le pod");
-new MessageManagers().displayMessage("caca");
