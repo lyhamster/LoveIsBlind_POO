@@ -18,10 +18,8 @@ class MessageManagers {
     displayMessage(message) {
         this.messageElement.classList.add("dialogue")
         this.messageElement.textContent = message;
-        this.main.appendChild(this.messageElement)
+        this.main.appendChild(this.messageElement);
 
         return this.messageElement;
-        
     }
 }
-
