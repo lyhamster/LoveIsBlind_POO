@@ -30,8 +30,9 @@ export default class Pod {
         const podElement = document.querySelectorAll(".pod");
         podElement.forEach((pod) => {
             pod.classList.remove(this.currentState);
-            this.currentState = value;
             pod.classList.add(value);
-        });
+        });    
+        this.currentState = value;
     }  
 }
+
