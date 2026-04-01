@@ -16,23 +16,23 @@ export default class Pod {
         ];
         this.currentState = "off";
         Pod.instance = this;   
-        return this
+        return this;
     }
 
     createElement() {
         const element = document.createElement("div");
-        element.classList.add("pod");
+        element.classList.add("pod", this.currentState);
         this.main.appendChild(element);
         return element;
     }
 
     changeState(value) {  
-        this.podElement = document.querySelectorAll(".pod");
-        this.podElement.forEach((podElement)=> {
-            podElement.classList.remove(this.currentState)});
-        this.currentState = value; 
-         this.podElement.forEach((podElement)=> {
-            podElement.classList.add(value)});
+        const podElement = document.querySelectorAll(".pod");
+        podElement.forEach((pod) => {
+            pod.classList.remove(this.currentState);
+            pod.classList.add(value);
+        });    
+        this.currentState = value;
     }  
 }
 
