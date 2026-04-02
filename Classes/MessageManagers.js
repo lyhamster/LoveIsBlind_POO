@@ -3,7 +3,7 @@
 import Candidate from "./Candidate.js";
 import Pod from "./Pod.js";
 
-class MessageManagers {
+export default class MessageManagers {
 
     constructor () {
         if (!!MessageManagers.instance) {
