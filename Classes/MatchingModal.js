@@ -3,7 +3,7 @@ import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import Pod from "./Pod.js";
 
-export class MatchingModal {
+export default class MatchingModal {
     constructor(candidateSummaryDate) {
         this.element = document.createElement("div");
         this.textElement = document.createElement("p");
@@ -19,14 +19,9 @@ export class MatchingModal {
         this.textElement.textContent = "C'est le match !";
         this.element.appendChild(this.textElement);
 
-        const littlePod = new Pod().createElement();
-        littlePod.classList.add("matchingModalPod");
-        this.element.appendChild(littlePod);
-
-        // todo: dynamically get candidate name;
-        const nameElement = document.createElement("p");
-        nameElement.textContent = "paul"; 
-        this.element.appendChild(nameElement)
+        const pod = document.querySelector(".pod");
+        pod.classList.add("matchingModalPod");
+        this.element.appendChild(pod);
         
         this.element.appendChild(this.createDateSummary());
         
@@ -42,6 +37,8 @@ export class MatchingModal {
         const dateRecapWrapperElement = this.#appendElement("div", ["dateRecapWrapper"], null, null);
         const dateRecapElement = this.#appendElement("div", ["dateRecap", "dateRecapSpace"], null, dateRecapWrapperElement);
         
+        this.#appendElement("p", ["dialogue"],  this.candidateSummaryDate.name, dateRecapWrapperElement);
+
         [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
             this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
         })
