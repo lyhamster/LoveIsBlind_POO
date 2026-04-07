@@ -2,7 +2,7 @@ import Button from "./Button.js";
 import Input from "./Input.js";
 import Pod from "./Pod.js";
 
-class InputsManager {
+export default class InputsManager {
     constructor () {
         if (!!InputsManager.instance) {
             return InputsManager.instance;
@@ -14,15 +14,15 @@ class InputsManager {
     }
 
     displayInput(instanceArray) { 
-        this.wrapper.replaceChildren();
-        instanceArray.forEach((instance) => {
-            this.wrapper.appendChild(instance.createElement());
-        });
-        this.main.appendChild(this.wrapper);
+        if (instanceArray.length > 1) {
+            console.log(instanceArray, "hello")
+            instanceArray.forEach((instance) => {
+                this.wrapper.appendChild(instance.createElement());
+            });
+            this.main.appendChild(this.wrapper);    
+        } else {
+            this.main.appendChild(instanceArray[0].createElement());
+        }
     }
 }
-
-
-
-
 
