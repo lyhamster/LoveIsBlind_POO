@@ -3,6 +3,7 @@ import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import FreeTextQuestion from "./FreeTextQuestion.js";
 import InputsManager from "./InputsManager.js";
+import MatchingModal from "./MatchingModal.js";
 import MessageManagers from "./MessageManagers.js";
 import Pod from "./Pod.js";
 
@@ -24,6 +25,7 @@ export default class Game {
 
     play() { 
         this.pod.changeState("off");
+        this.currentCandidatesArr = this.candidates;
         if (this.candidates.length === 0) {
             const nameElement = document.querySelector(".dialogue");
             nameElement.remove();
@@ -50,9 +52,10 @@ export default class Game {
                 
                 const main = document.querySelector("main");
                 main.appendChild(wrapper);
-                this.currentCandidatesArr = this.candidates;
+                this.currentCandidatesArr = [...this.candidates];
+                console.log(this.candidates)
                 this.candidates.splice(this.randomNb, 1);
-
+                
                 setTimeout(() => {
                     this.#discuss();
                 }, 3000);
@@ -62,6 +65,7 @@ export default class Game {
 
     #discuss() {
         this.message.displayMessage("");
+        console.log(this.candidates,this.currentCandidatesArr)
         this.currentCandidatesArr[this.randomNb].nextQuestion();
     }
 }
@@ -163,6 +167,7 @@ const John = new Candidate ("John", 28,[
     ], true),
 ]);
 
+export const kk = new Game ([John,Pierre,Paul,Jacque])
+kk.initialize()
+kk.play()
 
-
-new Game().initialize()
