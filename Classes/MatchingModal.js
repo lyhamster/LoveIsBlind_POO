@@ -1,14 +1,17 @@
 import Answer from "./Answer.js";
+import Button from "./Button.js";
 import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
+import Game from "./Game.js";
+import InputsManager from "./InputsManager.js";
 import Pod from "./Pod.js";
+import { kk } from "./Game.js"; 
 
 export default class MatchingModal {
     constructor(candidateSummaryDate) {
         this.element = document.createElement("div");
         this.textElement = document.createElement("p");
         this.main = document.querySelector("main");
-        this.bttnElement = document.createElement("button");
         this.candidateSummaryDate = candidateSummaryDate;
     }
 
@@ -25,28 +28,31 @@ export default class MatchingModal {
         
         this.element.appendChild(this.createDateSummary());
         
-        this.bttnElement.classList.add("multipleChoiceInput");
-        this.bttnElement.textContent = "Recommencer";
-        this.element.appendChild(this.bttnElement);
-
-        this.main.appendChild(this.element);
-        return this.main;
+        const bttnElement = new Button("Recommencer",() => {
+            this.main.removeChild(this.element);
+            kk.initialize();
+            kk.play();
+        },null);
+        new InputsManager().displayInput([bttnElement],this.element);
+        
+        return this.element;
     }
 
     createDateSummary() {
         const dateRecapWrapperElement = this.#appendElement("div", ["dateRecapWrapper"], null, null);
         const dateRecapElement = this.#appendElement("div", ["dateRecap", "dateRecapSpace"], null, dateRecapWrapperElement);
         
-        this.#appendElement("p", ["dialogue"],  this.candidateSummaryDate.name, dateRecapWrapperElement);
+        this.#appendElement("p", [null],  this.candidateSummaryDate.name, dateRecapElement);
 
         [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
             this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
         })
 
         const favAnswerElement = this.#appendElement("div",["favAnswer","dateRecapSpace"], null, dateRecapWrapperElement); 
-            this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
-            this.#appendElement("p", [null],  this.candidateSummaryDate.favQuestion, favAnswerElement);
-
+        this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
+        this.#appendElement("p", [null],  this.candidateSummaryDate.favQuestion, favAnswerElement);
+        this.#appendElement("p", [null],  this.candidateSummaryDate.favAnswer, favAnswerElement);
+            
         return dateRecapWrapperElement;
     }
 
@@ -62,7 +68,5 @@ export default class MatchingModal {
         
         return element;
     }
-
 }
-
 

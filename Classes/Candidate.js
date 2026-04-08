@@ -1,6 +1,7 @@
 import Answer from "./Answer.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import FreeTextQuestion from "./FreeTextQuestion.js";
+import MatchingModal  from "./MatchingModal.js";
 import Pod from "./Pod.js";
 
 export default class Candidate {
@@ -21,16 +22,16 @@ export default class Candidate {
     }
 
     display() {
-        const podElement = new Pod().createElement();
         const nameElement = document.createElement("p");
         nameElement.textContent = this.name;
         nameElement.classList.add("dialogue");
-        podElement.insertAdjacentElement("afterend", nameElement);
+        return nameElement;
     }
 
     nextQuestion() {    
         if (this.indexNb >= this.questions.length) {
-            this.dateSummary();
+            const main = document.querySelector("main")
+            main.appendChild(new MatchingModal(this.dateSummary()).createElement());
             return;
         }
 
@@ -46,6 +47,7 @@ export default class Candidate {
                     this.favQuestion = this.questions[this.indexNb].label;
                     this.questions[this.indexNb].answers.forEach((answer) => {
                         if (answer.label && answer.level >= Answer.favourite) {
+                            console.log("hello")
                             this.favAnswer = answer.label;
                         }
                     });
@@ -65,32 +67,10 @@ export default class Candidate {
             [Candidate.negativeAnswersLabel] : this.negativeCount,
             favQuestion : this.favQuestion,
             favAnswer : this.favAnswer,
+            name: this.name,
         }
+
+        console.log(summaryObj)
+        return summaryObj
     }
 };
-
-const paul = new Candidate ("Paul Mescal", 28, [
-    new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
-        const answerValue = childNb.target.value;
-        if (parseInt(answerValue) === 0) {
-            return 5;
-        } else {
-            return -5;
-        }
-    }, false),
-    new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.favourite),
-        new Answer ("montagne", Answer.negative),
-    ], false),
-    new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", Answer.positive),
-        new Answer ("non", Answer.negative),
-    ], false),
-    new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
-        new Answer ("Past Lives", Answer.positive),
-        new Answer ("Pearl", Answer.positive),
-        new Answer ("AfterSun", Answer.positive),
-        new Answer ("Whiplash", Answer.ick),
-    ], true),
-]);
-
