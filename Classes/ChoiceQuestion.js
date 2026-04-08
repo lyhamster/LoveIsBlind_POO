@@ -20,24 +20,20 @@ export default class ChoiceQuestion extends Question {
     }
 
     ask(onAnswer) {
-        const main = document.querySelector("main"); 
-        const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
-
-
         setTimeout(() => {
             new Pod ().changeState("talking"); 
             new MessageManagers().displayMessage(super.ask());
             this.onAnswer = onAnswer;
             if (this.hasMultiplesAnswers) {
-                this.handleMultipleAnswers(main, multipleChoiceInputWrapper);
+                this.handleMultipleAnswers();
             } else {
-                this.handleAnswers(main, multipleChoiceInputWrapper); 
+                this.handleAnswers(); 
             }
        }, 1000)
 
     };
 
-    handleAnswers(mainElement,wrapperElement) {
+    handleAnswers() {
 
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, () => {
@@ -58,7 +54,7 @@ export default class ChoiceQuestion extends Question {
         },5000)
     };
 
-    handleMultipleAnswers(mainElement,wrapperElement) {
+    handleMultipleAnswers() {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
                 const target = e.target; 
@@ -83,7 +79,8 @@ export default class ChoiceQuestion extends Question {
             this.#removeButton();
             this.onAnswer(this.scoreLevel);
         })
-        new InputsManager().displayInput([validateBttn]);
+        const main = document.querySelector("main")
+        new InputsManager().displayInput([validateBttn],main);
     };
 
     #removeButton() {
