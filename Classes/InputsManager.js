@@ -13,15 +13,14 @@ export default class InputsManager {
         return this;
     }
 
-    displayInput(instanceArray) { 
+    displayInput(instanceArray,parentElement) { 
         if (instanceArray.length > 1) {
-            console.log(instanceArray, "hello")
             instanceArray.forEach((instance) => {
                 this.wrapper.appendChild(instance.createElement());
             });
             this.main.appendChild(this.wrapper);    
         } else {
-            this.main.appendChild(instanceArray[0].createElement());
+           parentElement.appendChild(instanceArray[0].createElement());
         }
     }
 }
