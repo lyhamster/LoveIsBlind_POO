@@ -2,17 +2,16 @@ import Answer from "./Answer.js";
 import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import FreeTextQuestion from "./FreeTextQuestion.js";
-import InputsManager from "./InputsManager.js";
 import MatchingModal from "./MatchingModal.js";
 import MessageManagers from "./MessageManagers.js";
 import Pod from "./Pod.js";
 
 export default class Game {
     seconds = 0;
-    randomNb = 0;
+    indexNb = 0;
     currentCandidatesArr;
 
-    constructor (candidates) {
+    constructor(candidates) {
         this.candidates = candidates;
         this.pod = new Pod();
         this.message = new MessageManagers();
@@ -20,7 +19,7 @@ export default class Game {
 
     initialize() {
         const main = document.querySelector("main");
-        main.appendChild(this.pod.createElement())
+        main.appendChild(this.pod.createElement());
     }
 
     play() { 
@@ -30,43 +29,36 @@ export default class Game {
             const nameElement = document.querySelector(".dialogue");
             nameElement.remove();
             return;
-        }
+        };
         
         const dialogueElement = document.querySelectorAll(".dialogue");
         dialogueElement.forEach((dialogue) => {
             dialogue.remove();
-        })
+        });
 
         setTimeout(() => {
-            this.randomNb = Math.floor(Math.random() * this.candidates.length);
+            this.indexNb = Math.floor(Math.random() * this.candidates.length);
             this.pod.changeState("joining");
             this.message.displayMessage("Recherche d'un candidat ...");  
             
             setTimeout(() => {
                 this.pod.changeState("presence"); 
-                const wrapper = document.createElement("div");
-                wrapper.classList.add("wrapperElement");
-
-                wrapper.appendChild(this.candidates[this.randomNb].display());
-                wrapper.appendChild(this.message.displayMessage("entre dans le pod"));
-                
-                const main = document.querySelector("main");
-                main.appendChild(wrapper);
+                this.message.displayMessage(`${this.candidates[this.indexNb].name} entre dans le pod`);
                 this.currentCandidatesArr = [...this.candidates];
-                console.log(this.candidates)
-                this.candidates.splice(this.randomNb, 1);
+                this.candidates.splice(this.indexNb, 1);
                 
                 setTimeout(() => {
                     this.#discuss();
                 }, 3000);
-            }, 5000)
-        }, 2000)
+            }, 5000);
+        }, 2000);
     }
 
     #discuss() {
         this.message.displayMessage("");
-        console.log(this.candidates,this.currentCandidatesArr)
-        this.currentCandidatesArr[this.randomNb].nextQuestion();
+        this.currentCandidatesArr[this.indexNb].nextQuestion(() => {
+            new MatchingModal(this.currentCandidatesArr[this.indexNb].dateSummary()).createElement()
+        });
     }
 }
 
@@ -80,20 +72,21 @@ const Pierre = new Candidate ("Pierre", 28, [
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.favourite),
-        new Answer ("montagne", Answer.negative),
+        new Answer("ville", Answer.favourite),
+        new Answer("montagne", Answer.negative),
     ], false),
     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", Answer.positive),
-        new Answer ("non", Answer.negative),
+        new Answer("oui", Answer.positive),
+        new Answer("non", Answer.negative),
     ], false),
     new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
-        new Answer ("Past Lives", Answer.positive),
-        new Answer ("Pearl", Answer.positive),
-        new Answer ("AfterSun", Answer.positive),
-        new Answer ("Whiplash", Answer.ick),
+        new Answer("Past Lives", Answer.positive),
+        new Answer("Pearl", Answer.positive),
+        new Answer("AfterSun", Answer.positive),
+        new Answer("Whiplash", Answer.ick),
     ], true),
 ]);
+
 const Paul = new Candidate ("Paul", 28, [
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
         const answerValue = childNb.target.value;
@@ -104,20 +97,21 @@ const Paul = new Candidate ("Paul", 28, [
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.favourite),
-        new Answer ("montagne", Answer.negative),
+        new Answer("ville", Answer.favourite),
+        new Answer("montagne", Answer.negative),
     ], false),
     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", Answer.positive),
-        new Answer ("non", Answer.negative),
+        new Answer("oui", Answer.positive),
+        new Answer("non", Answer.negative),
     ], false),
     new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
-        new Answer ("Past Lives", Answer.positive),
-        new Answer ("Pearl", Answer.positive),
-        new Answer ("AfterSun", Answer.positive),
-        new Answer ("Whiplash", Answer.ick),
+        new Answer("Past Lives", Answer.positive),
+        new Answer("Pearl", Answer.positive),
+        new Answer("AfterSun", Answer.positive),
+        new Answer("Whiplash", Answer.ick),
     ], true),
 ]);
+
 const Jacque = new Candidate ("Jacque", 28, [
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
         const answerValue = childNb.target.value;
@@ -128,20 +122,21 @@ const Jacque = new Candidate ("Jacque", 28, [
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.favourite),
-        new Answer ("montagne", Answer.negative),
+        new Answer("ville", Answer.favourite),
+        new Answer("montagne", Answer.negative),
     ], false),
     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", Answer.positive),
-        new Answer ("non", Answer.negative),
+        new Answer("oui", Answer.positive),
+        new Answer("non", Answer.negative),
     ], false),
     new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
-        new Answer ("Past Lives", Answer.positive),
-        new Answer ("Pearl", Answer.positive),
-        new Answer ("AfterSun", Answer.positive),
-        new Answer ("Whiplash", Answer.ick),
+        new Answer("Past Lives", Answer.positive),
+        new Answer("Pearl", Answer.positive),
+        new Answer("AfterSun", Answer.positive),
+        new Answer("Whiplash", Answer.ick),
     ], true),
 ]);
+
 const John = new Candidate ("John", 28,[
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
         const answerValue = childNb.target.value;
@@ -152,22 +147,22 @@ const John = new Candidate ("John", 28,[
         }
     }, false),
     new ChoiceQuestion("tu préfères marcher en ville ou à la montagne ?", [
-        new Answer ("ville", Answer.favourite),
-        new Answer ("montagne", Answer.negative),
+        new Answer("ville", Answer.favourite),
+        new Answer("montagne", Answer.negative),
     ], false),
     new ChoiceQuestion("est-ce tu aimes les films d'A24?", [
-        new Answer ("oui", Answer.positive),
-        new Answer ("non", Answer.negative),
+        new Answer("oui", Answer.positive),
+        new Answer("non", Answer.negative),
     ], false),
     new ChoiceQuestion("parmis les films d'A24, lequel est-t-on pref ?", [
-        new Answer ("Past Lives", Answer.positive),
-        new Answer ("Pearl", Answer.positive),
-        new Answer ("AfterSun", Answer.positive),
-        new Answer ("Whiplash", Answer.ick),
+        new Answer("Past Lives", Answer.positive),
+        new Answer("Pearl", Answer.positive),
+        new Answer("AfterSun", Answer.positive),
+        new Answer("Whiplash", Answer.ick),
     ], true),
 ]);
 
-export const kk = new Game ([John,Pierre,Paul,Jacque])
-kk.initialize()
-kk.play()
+export const players = [John,Pierre,Paul,Jacque];
+new Game().initialize();
+new Game(players).play();
 
