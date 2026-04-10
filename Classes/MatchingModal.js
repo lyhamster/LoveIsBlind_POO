@@ -21,7 +21,6 @@ export default class MatchingModal {
         const pod = document.querySelector(".pod");
         pod.classList.add("matchingModalPod");
         this.element.appendChild(pod);
-        console.log(pod)
         this.element.appendChild(this.createDateSummary());
         
         const bttnElement = new Button("Recommencer",() => {
@@ -30,7 +29,8 @@ export default class MatchingModal {
             new Game(players).play();
         }, null);
         new InputsManager().displayInput([bttnElement],this.element);
-        return this.element;
+
+        this.main.appendChild(this.element);
     }
 
     createDateSummary() {
@@ -39,9 +39,9 @@ export default class MatchingModal {
         
         this.#appendElement("p", [null],  this.candidateSummaryDate.name, dateRecapElement);
 
-        // [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
-        //     this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
-        // })
+        [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
+            this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
+        })
 
         const favAnswerElement = this.#appendElement("div",["favAnswer","dateRecapSpace"], null, dateRecapWrapperElement); 
         this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
@@ -64,23 +64,3 @@ export default class MatchingModal {
     }
 };
 
-    // dateSummary() {
-    //     const summaryObj = {
-    //         [Candidate.totalQuestionLabel] : this.questions.length,
-    //         [Candidate.positiveAnswersLabel] : this.positiveCount,
-    //         [Candidate.negativeAnswersLabel] : this.negativeCount,
-    //         favQuestion : this.favQuestion,
-    //         favAnswer : this.favAnswer,
-    //         name: this.name,
-    //     };
-        
-    //     return summaryObj;
-    // }
-const obj = {
-
-    favQuestion : "blabla",
-    favAnswer : "test",
-    name: "Gustave",
-}
-
-new MatchingModal(obj).createElement()
