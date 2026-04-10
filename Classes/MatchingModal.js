@@ -11,7 +11,7 @@ export default class MatchingModal {
         this.candidateSummaryDate = candidateSummaryDate;
     }
 
-    createElement() {
+    createElement(onReset) {
         this.element.classList.add("matchingModalWrapper");
 
         this.textElement.classList.add("matchingModalTitle");
@@ -25,8 +25,7 @@ export default class MatchingModal {
         
         const bttnElement = new Button("Recommencer",() => {
             this.main.removeChild(this.element);
-            new Game().initialize();
-            new Game(players).play();
+            onReset()
         }, null);
         new InputsManager().displayInput([bttnElement],this.element);
 
