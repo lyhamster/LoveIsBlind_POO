@@ -30,12 +30,12 @@ export default class Game {
             nameElement.remove();
             return;
         };
-        
+
         const dialogueElement = document.querySelectorAll(".dialogue");
         dialogueElement.forEach((dialogue) => {
             dialogue.remove();
         });
-
+        console.log(this.candidates);
         setTimeout(() => {
             this.indexNb = Math.floor(Math.random() * this.candidates.length);
             this.pod.changeState("joining");
@@ -57,10 +57,14 @@ export default class Game {
     #discuss() {
         this.message.displayMessage("");
         this.currentCandidatesArr[this.indexNb].nextQuestion(() => {
-            new MatchingModal(this.currentCandidatesArr[this.indexNb].dateSummary()).createElement()
+            const dateSummaryObject = this.currentCandidatesArr[this.indexNb].dateSummary()
+            new MatchingModal(dateSummaryObject).createElement(() => {
+                new Game().initialize();
+                new Game(this.candidates).play();
+            })
         });
     }
-}
+};
 
 const Pierre = new Candidate ("Pierre", 28, [
     new FreeTextQuestion("tu as combien d'enfants ?", (childNb) => {
