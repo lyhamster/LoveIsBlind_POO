@@ -2,7 +2,7 @@ export default class Button {
     #label;
     #callback;
     #color;
-    constructor (label,callback,color) {
+    constructor(label, callback, color) {
         this.#label = label;
         this.#callback = callback;
         this.#color = color;
@@ -21,7 +21,7 @@ export default class Button {
             this.#callback(e); 
         });
         return bttn;
-    };
+    }
 };
 
 

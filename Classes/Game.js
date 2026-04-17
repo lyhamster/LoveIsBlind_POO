@@ -1,7 +1,9 @@
 import Answer from "./Answer.js";
+import Button from "./Button.js";
 import Candidate from "./Candidate.js";
 import ChoiceQuestion from "./ChoiceQuestion.js";
 import FreeTextQuestion from "./FreeTextQuestion.js";
+import InputsManager from "./InputsManager.js";
 import MatchingModal from "./MatchingModal.js";
 import MessageManagers from "./MessageManagers.js";
 import Pod from "./Pod.js";
@@ -15,53 +17,70 @@ export default class Game {
         this.candidates = candidates;
         this.pod = new Pod();
         this.message = new MessageManagers();
+        this.main = document.querySelector("main");
+        this.selectPod = document.querySelector(".pod");
     }
 
     initialize() {
-        const main = document.querySelector("main");
-        main.appendChild(this.pod.createElement());
+
+        this.main.appendChild(this.pod.createElement()); 
+        this.pod.changeState("off");
+        const enterGameBttn = new Button("Entrer dans le pod", () => {
+            this.play(() => {
+                const enterGameBttn = document.querySelector(".removeBttn"); 
+                enterGameBttn.classList.add("opacityBttn")
+                enterGameBttn.remove();
+            });
+        },null);
+        new InputsManager().displayInput([enterGameBttn],this.main);
     }
 
-    play() { 
-        this.pod.changeState("off");
-        this.currentCandidatesArr = this.candidates;
+    play(onRemove) {
         if (this.candidates.length === 0) {
             const nameElement = document.querySelector(".dialogue");
             nameElement.remove();
             return;
         };
-
+        onRemove(); 
+        
+        this.currentCandidatesArr = this.candidates;
+        
         const dialogueElement = document.querySelectorAll(".dialogue");
         dialogueElement.forEach((dialogue) => {
             dialogue.remove();
         });
-        console.log(this.candidates);
+      
+        this.indexNb = Math.floor(Math.random() * this.candidates.length);
+
+        document.querySelector(".pod").classList.add("podTest");
+        
+
+        this.pod.changeState("joining");
+
+        
+        this.message.displayMessage("Recherche d'un candidat ...");  
+        document.querySelector(".dialogue").classList.add("podTranslate");
         setTimeout(() => {
-            this.indexNb = Math.floor(Math.random() * this.candidates.length);
-            this.pod.changeState("joining");
-            this.message.displayMessage("Recherche d'un candidat ...");  
-            
+            this.pod.changeState("presence"); 
+            this.message.displayMessage(`${this.candidates[this.indexNb].name} entre dans le pod`);
+            this.currentCandidatesArr = [...this.candidates];
+            this.candidates.splice(this.indexNb, 1);
             setTimeout(() => {
-                this.pod.changeState("presence"); 
-                this.message.displayMessage(`${this.candidates[this.indexNb].name} entre dans le pod`);
-                this.currentCandidatesArr = [...this.candidates];
-                this.candidates.splice(this.indexNb, 1);
-                
-                setTimeout(() => {
-                    this.#discuss();
-                }, 3000);
-            }, 5000);
+                this.#discuss();
+            }, 2500);
         }, 2000);
     }
 
     #discuss() {
-        this.message.displayMessage("");
+        document.querySelector(".matchingModalTitle").classList.add("podTranslate");
+        this.pod.setTitle(this.currentCandidatesArr[this.indexNb].getNameElement());
+       
         this.currentCandidatesArr[this.indexNb].nextQuestion(() => {
-            const dateSummaryObject = this.currentCandidatesArr[this.indexNb].dateSummary()
+            const dateSummaryObject = this.currentCandidatesArr[this.indexNb].dateSummary();
             new MatchingModal(dateSummaryObject).createElement(() => {
-                new Game().initialize();
-                new Game(this.candidates).play();
-            })
+                new Game(this.candidates).initialize();
+                this.pod.setTitle("");
+            });
         });
     }
 };
@@ -167,6 +186,5 @@ const John = new Candidate ("John", 28,[
 ]);
 
 export const players = [John,Pierre,Paul,Jacque];
-new Game().initialize();
-new Game(players).play();
+new Game(players).initialize();
 

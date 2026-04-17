@@ -1,6 +1,5 @@
 import Button from "./Button.js";
 import Candidate from "./Candidate.js";
-import Game, { players } from "./Game.js";
 import InputsManager from "./InputsManager.js";
 
 export default class MatchingModal {
@@ -14,19 +13,22 @@ export default class MatchingModal {
     createElement(onReset) {
         this.element.classList.add("matchingModalWrapper");
 
-        this.textElement.classList.add("matchingModalTitle");
+        this.textElement.classList.add("matchingModalTitle","matchingModalTitle_decoration");
         this.textElement.textContent = "C'est le match !";
         this.element.appendChild(this.textElement);
 
         const pod = document.querySelector(".pod");
         pod.classList.add("matchingModalPod");
-        this.element.appendChild(pod);
+
+        const podWrapper = document.querySelector(".podWrapper");
+        this.element.appendChild(podWrapper);
+
         this.element.appendChild(this.createDateSummary());
         
-        const bttnElement = new Button("Recommencer",() => {
+        const bttnElement = new Button("Recommencer",() => {  
             this.main.removeChild(this.element);
-            onReset()
-        }, null);
+            onReset();
+        }, "theme_alt");
         new InputsManager().displayInput([bttnElement],this.element);
 
         this.main.appendChild(this.element);
@@ -36,8 +38,6 @@ export default class MatchingModal {
         const dateRecapWrapperElement = this.#appendElement("div", ["dateRecapWrapper"], null, null);
         const dateRecapElement = this.#appendElement("div", ["dateRecap", "dateRecapSpace"], null, dateRecapWrapperElement);
         
-        this.#appendElement("p", [null],  this.candidateSummaryDate.name, dateRecapElement);
-
         [Candidate.totalQuestionLabel, Candidate.positiveAnswersLabel, Candidate.negativeAnswersLabel].forEach((label) => {
             this.#appendElement("p", [null],`${label} : ${this.candidateSummaryDate[label]}`, dateRecapElement);
         })

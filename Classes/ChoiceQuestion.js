@@ -1,4 +1,3 @@
-import Answer from "./Answer.js";
 import Button from "./Button.js";
 import InputsManager from "./InputsManager.js";
 import MessageManagers from "./MessageManagers.js";
@@ -13,8 +12,8 @@ export default class ChoiceQuestion extends Question {
     scoreLevel = 0;
     bttnArr = [];
 
-    constructor (label, answers, hasMultiplesAnswers) {
-        super (label);
+    constructor(label, answers, hasMultiplesAnswers) {
+        super(label);
         this.answers = answers; 
         this.hasMultiplesAnswers = hasMultiplesAnswers;
     }
@@ -22,19 +21,17 @@ export default class ChoiceQuestion extends Question {
     ask(onAnswer) {
         setTimeout(() => {
             new Pod ().changeState("talking"); 
-            new MessageManagers().displayMessage(super.ask());
+            super.ask();
             this.onAnswer = onAnswer;
             if (this.hasMultiplesAnswers) {
                 this.handleMultipleAnswers();
             } else {
                 this.handleAnswers(); 
-            }
-       }, 1000)
-
-    };
+            };
+       }, 1000);
+    }
 
     handleAnswers() {
-
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, () => {
                 if (answer.level >= 0) {
@@ -46,13 +43,13 @@ export default class ChoiceQuestion extends Question {
                 }
                 this.onAnswer(answer.level);
             })
-            this.bttnArr.push(bttn)
+            this.bttnArr.push(bttn);
         });
         new Pod().changeState("presence");
         setTimeout(() => {   
             new InputsManager().displayInput(this.bttnArr);
-        },5000)
-    };
+        }, 4000);
+    }
 
     handleMultipleAnswers() {
         this.answers.forEach((answer) => {
@@ -64,7 +61,7 @@ export default class ChoiceQuestion extends Question {
                 } else {
                     target.classList.add("selectedAnswer");
                     this.scoreLevel += answer.level;
-                }   
+                };   
             }); 
             this.bttnArr.push(bttn);
         });
@@ -75,13 +72,13 @@ export default class ChoiceQuestion extends Question {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");
-            }
+            };
             this.#removeButton();
             this.onAnswer(this.scoreLevel);
-        })
-        const main = document.querySelector("main")
+        },"theme_alt");
+        const main = document.querySelector("main");
         new InputsManager().displayInput([validateBttn],main);
-    };
+    }
 
     #removeButton() {
         const bttnElements = document.querySelectorAll("button");
@@ -90,7 +87,7 @@ export default class ChoiceQuestion extends Question {
             });
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
-    };
+    }
 };
 
    
