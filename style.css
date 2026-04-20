@@ -58,17 +58,45 @@ a {
     font-size: 20px;
 }
 
-.pod, .off {
+.pod {
     width: 200px;
     height: 340px;
     border-radius: 152px 152px 52px 52px;
     background-color:  #444444;
     background-image: 
         linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
-        radial-gradient(var(--mainRG) 60%, var(--secondaryRG) 95%),
-        conic-gradient(from 180deg, var(--mainCG) 0%, var(--secondaryCG) 100%); 
-    border: 2px solid #7d7d7d75;
-    transition: width, height, transform, ease-in-out 0.5s;
+        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG)); 
+    border: 2px solid var(--borderColor);
+    overflow: hidden;
+    position: relative;
+    transition: all 1500ms linear;
+
+}
+
+.pod::after {
+    content: "";
+    transform: rotate(var(--angle));
+    background-image: radial-gradient(ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) var(--gradientMainNb), var(--secondaryRG) var(--gradientSecondNb));
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    right: -50%;
+}
+
+.off {
+    transition: all 0.2s ease-in-out;
+}
+
+@keyframes opacityTest {
+    from { 
+        opacity: 0;
+    }
+
+    to { 
+        opacity: 1;
+    }
+
 }
 
 .podTest { 
@@ -94,6 +122,7 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     color: #F9DAC3;
     text-align: center;
     outline: thin;
+    animation: opacityTest 2000ms normal ease-in-out;
 }
 
 .selectedAnswer {
@@ -136,13 +165,19 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 
 @property --secondaryRG {
     syntax: '<color>';
-    initial-value: #ffffff3f;
+    initial-value: rgba(255, 255, 255, 0);
     inherits: true; 
 }
 
 @property --mainCG {
     syntax: '<color>';
     initial-value: #212121;
+    inherits: true; 
+}
+
+@property --borderColor {
+    syntax: '<color>';
+    initial-value: #7d7d7d75;
     inherits: true; 
 }
 
@@ -158,20 +193,27 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     inherits: true;
 }
 
-@property --integer {
-    syntax: "<number> | <percentage>";
-    initial-value: 1;
+@property --gradientSecondNb {
+    syntax: "<percentage>";
+    initial-value: 0%;
     inherits: true;
 }
+
+@property --gradientMainNb {
+    syntax: "<percentage>";
+    initial-value: 0%;
+    inherits: true;
+}
+
 @property --ellipseMain {
-    syntax: "<number> | <percentage>";
-    initial-value: 1;
+    syntax: "<percentage>";
+    initial-value: 0%;
     inherits: true;
 }
 
 @property --ellipseSecond {
-    syntax: "<number> | <percentage>";
-    initial-value: 1;
+    syntax: "<percentage>";
+    initial-value: 0%;
     inherits: true;
 }
 
@@ -219,52 +261,38 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 
     --mainRG: rgba(0, 0, 0, 0.1); 
     --secondaryRG: rgba(255, 255, 255, 0.1);
-    --integer: 60%;
+
+    --gradientMainNb: 0%;
+    --gradientSecondNb: 60%;
     --ellipseMain: 40%;
     --ellipseSecond: 50%;
     
-    background-image:
-        linear-gradient(var(--accentLG), var(--mainLG), var(--secondaryLG)),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
-    background-color: #444444; 
-    overflow: hidden;
-    position: relative;
-
-    border: 2px solid #fbfbfbe0;
-
+    --borderColor: #fbfbfbe0;
+    transition: all 3000ms linear;
+    border: 2px solid var(--borderColor);
+    animation: joining 3000ms ease-in-out;
 }
-
-.joining::after {
-    content: "";
-    transform: rotate(var(--angle));
-
-    background-image: radial-gradient( ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) 0%, var(--secondaryRG) var(--integer));
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    right: -50%;
-} 
 
 .presence {
     --accentLG: rgba(0, 0, 0, 0);
     --mainLG: rgba(255, 110, 151, 0.2);
     --secondaryLG: rgba(255, 255, 255, 0.2);
 
-    --mainCG: rgba(255, 143, 61, 0.91);
-    --secondaryCG: rgba(228, 115, 33, 0.65);
+    --mainCG: rgb(255 143 61);
+    --secondaryCG: rgb(228 115 33);
 
-    --mainRG: rgba(0, 0, 0, 0); 
-    --secondaryRG: rgba(255, 255, 255, 0.7);
+    --mainRG: rgb(0 0 0 / 20%);
+    --secondaryRG: rgb(255 255 255 / 20%);
+    --borderColor: rgba(255, 177, 120, 1);
+    /* --gradientSecondNb: 60%;
+    --ellipseMain: 80%;
+    --ellipseSecond: 100%; */
 
-    background-image: 
-        linear-gradient(var(--accentLG), var(--mainLG), var(--secondaryLG)),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG)),
-        radial-gradient(ellipse 80% 100%, var(--mainRG) 0%, var(--secondaryRG) 60%);
-    border: 2px solid rgba(255, 177, 120, 1);
-
-    animation:  1500ms linear;
+    --gradientSecondNb: 26%;
+    --ellipseMain: 90%;
+    --ellipseSecond: 100%;
 } 
+
 
 @keyframes talking { 
     40% {
@@ -283,29 +311,15 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 
     --mainRG: rgba(0, 0, 0, 0); 
     --secondaryRG: rgba(255, 255, 255, 0.2);
-
+    --borderColor: #FFDA78;
     --ellipseMain: 20%;
     --ellipseSecond: 15%;
-    background-image:
-        linear-gradient(var(--accentLG), var(--mainLG), var(--secondaryLG)),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
-        border: 2px solid #FFDA78;
-    overflow: hidden;
-    position: relative;
-    animation: talking 1500ms ease-out infinite;
+    
+    --gradientMainNb: 13%;
+    --gradientSecondNb: 60%;
+    transition: all 3000ms linear;
+    animation: talking 3000ms infinite;
 } 
-
-.talking::after {
-    content: "";
-    transform: rotate(var(--angle));
-    background-image: 
-        radial-gradient(ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) 13%, var(--secondaryRG) 60%);
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    right: -50%;
-}  
 
 @keyframes thinkingRight {
     30% {
@@ -320,11 +334,10 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
         --ellipseMain: 35%;
         --ellipseSecond: 30%;
         border: 2px solid #FFB178;
-
     }
 
     60%, 80%{
-        --angle: -0deg;
+        --angle: 0deg;
 
         --accentLG: #00000000;
         --mainLG: rgba(255, 110, 151, 0.20);
@@ -343,8 +356,7 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     }
 
     100% {
-        
-        --accentLG: #00000000;
+        --accentLG: rgba(0, 0, 0, 0);
         --mainLG: rgba(255, 110, 151, 0.20);
         --secondaryLG: rgba(255, 255, 255, 0);
     
@@ -361,7 +373,7 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 }
 
 .thinkingRight {
-    --accentLG: #00000000;
+    --accentLG: rgba(0, 0, 0, 0);
     --mainLG: rgba(255, 110, 151, 0.20);
     --secondaryLG: rgba(255, 255, 255, 0);
     
@@ -370,32 +382,14 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 
     --mainRG: rgba(0, 0, 0, 0.20); 
     --secondaryRG: rgb(255, 255, 255, 0.20); 
-
-    --angle: 0deg;
+    --borderColor: #FFB178;
     --ellipseMain: 50%;
     --ellipseSecond: 46%;
-    background-image:
-        linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
+    --gradientSecondNb: 60%;
 
-    border: 2px solid #FFB178;
-    position: relative;
-    overflow: hidden;
-    animation:  2000ms, thinkingRight ease-in-out normal 2500ms forwards;
+    animation: thinkingRight ease-in-out normal 2500ms forwards;
 
 }
-
-.thinkingRight::after {
-    content: "";
-    transform: rotate(var(--angle));
-    background-image: 
-        radial-gradient( ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) 0%, var(--secondaryRG) 60%); 
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    right: -50%;
-} 
 
 @keyframes thinkingWrong {
     30% {
@@ -410,13 +404,12 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
         --ellipseMain: 35%;
         --ellipseSecond: 30%;
         border: 2px solid #FFB178;
-
     }
 
     60%, 80%{
         --angle: -0deg;
 
-        --accentLG: #00000000;
+        --accentLG: rgba(0, 0, 0, 0);
         --mainLG: rgba(255, 110, 151, 0.20);
         --secondaryLG: rgba(255, 255, 255, 0);
     
@@ -461,41 +454,22 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
     --mainRG: rgba(0, 0, 0, 0.20); 
     --secondaryRG: rgb(255, 255, 255, 0.20); 
 
-    --angle: 0deg;
+    --gradientSecondNb: 60%;
     --ellipseMain: 50%;
     --ellipseSecond: 46%;
-    background-image:
-        linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
+    --borderColor: #FFB178; 
 
-    border: 2px solid #FFB178;
-    position: relative;
-    overflow: hidden;
     animation: thinkingWrong ease-in-out normal 3000ms forwards;
-
 }
-
-.thinkingWrong::after {
-    content: "";
-    transform: rotate(var(--angle));
-    background-image: 
-        radial-gradient( ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) 0%, var(--secondaryRG) 60%); 
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    right: -50%;
-} 
 
 @keyframes matching {
     0% {
         border: none;
-
     }
+
     30% {
         --mainCG: rgb(255, 186, 135);
         --secondaryCG: rgb(255, 166, 23);
-
         --ellipseMain: 40%;
         --ellipseSecond: 30%;
         border: none;
@@ -537,29 +511,14 @@ input, .multipleChoiceInput, .selectedAnswer, .removeBttn {
 
     --mainRG: rgba(0, 0, 0, 0.20); 
     --secondaryRG: rgb(255, 255, 255, 0.20);
-    
+    --borderColor:  rgb(255, 206, 71);
+
+    --gradientSecondNb: 60%;
     --ellipseMain: 50%;
     --ellipseSecond: 46%;
-    background-image:
-        linear-gradient(var(--accentLG) 0%, var(--mainLG) 46%, var(--secondaryLG) 100%),
-        conic-gradient(from 180deg, var(--mainCG), var(--secondaryCG));
-    animation: matching 2500ms forwards;
-    border: 2px solid rgb(255, 206, 71);
-    position: relative;
-    overflow: hidden;
-} 
 
-.matching::after {
-    content: "";
-    transform: rotate(var(--angle));
-    background-image: 
-        radial-gradient( ellipse var(--ellipseMain) var(--ellipseSecond), var(--mainRG) 0%, var(--secondaryRG) 60%); 
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    right: -50%;
-}
+    animation: matching 2500ms forwards;
+} 
 
 /* Matching modal*/
 
