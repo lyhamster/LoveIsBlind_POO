@@ -1,5 +1,6 @@
-import Answer from "./Answer.js";
 import Button from "./Button.js";
+import InputsManager from "./InputsManager.js";
+import MessageManagers from "./MessageManagers.js";
 import Pod from "./Pod.js";
 import Question from "./Question.js";
 
@@ -9,27 +10,28 @@ export default class ChoiceQuestion extends Question {
     hasMultiplesAnswers;
     onAnswer;
     scoreLevel = 0;
-    
-    constructor (label, answers, hasMultiplesAnswers) {
-        super (label);
+    bttnArr = [];
+
+    constructor(label, answers, hasMultiplesAnswers) {
+        super(label);
         this.answers = answers; 
         this.hasMultiplesAnswers = hasMultiplesAnswers;
     }
 
     ask(onAnswer) {
-       const main = document.querySelector("main"); 
-       const multipleChoiceInputWrapper = document.querySelector(".multipleChoiceInputWrapper");
-       super.ask();
-       this.onAnswer = onAnswer;
-      
-       if (this.hasMultiplesAnswers) {
-        this.handleMultipleAnswers(main, multipleChoiceInputWrapper);
-       } else {
-        this.handleAnswers(main, multipleChoiceInputWrapper); 
-       }
-    };
+        setTimeout(() => {
+            new Pod ().changeState("talking"); 
+            super.ask();
+            this.onAnswer = onAnswer;
+            if (this.hasMultiplesAnswers) {
+                this.handleMultipleAnswers();
+            } else {
+                this.handleAnswers(); 
+            };
+       }, 1000);
+    }
 
-    handleAnswers(mainElement,wrapperElement) {
+    handleAnswers() {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, () => {
                 if (answer.level >= 0) {
@@ -40,13 +42,16 @@ export default class ChoiceQuestion extends Question {
                     this.#removeButton();
                 }
                 this.onAnswer(answer.level);
-            }).createElement();
-            wrapperElement.appendChild(bttn);  
-        }); 
-        mainElement.appendChild(wrapperElement);     
-    };
+            })
+            this.bttnArr.push(bttn);
+        });
+        new Pod().changeState("presence");
+        setTimeout(() => {   
+            new InputsManager().displayInput(this.bttnArr);
+        }, 4000);
+    }
 
-    handleMultipleAnswers(mainElement,wrapperElement) {
+    handleMultipleAnswers() {
         this.answers.forEach((answer) => {
             const bttn = new Button(answer.label, (e) => {
                 const target = e.target; 
@@ -56,23 +61,24 @@ export default class ChoiceQuestion extends Question {
                 } else {
                     target.classList.add("selectedAnswer");
                     this.scoreLevel += answer.level;
-                  
-                }
-            }).createElement();
-            wrapperElement.appendChild(bttn);   
+                };   
+            }); 
+            this.bttnArr.push(bttn);
         });
-        mainElement.appendChild(wrapperElement);
+        new InputsManager().displayInput(this.bttnArr);
+
         const validateBttn = new Button("Enter", () => {
             if (this.scoreLevel >= 0) {
                 new Pod().changeState("thinkingRight");
             } else {
                 new Pod().changeState("thinkingWrong");
-            }
+            };
             this.#removeButton();
             this.onAnswer(this.scoreLevel);
-        }).createElement(); 
-        mainElement.appendChild(validateBttn);
-    };
+        },"theme_alt");
+        const main = document.querySelector("main");
+        new InputsManager().displayInput([validateBttn],main);
+    }
 
     #removeButton() {
         const bttnElements = document.querySelectorAll("button");
@@ -81,7 +87,7 @@ export default class ChoiceQuestion extends Question {
             });
         const dialogue = document.querySelector(".dialogue");
         dialogue.remove();
-    };
+    }
 };
 
    

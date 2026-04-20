@@ -1,41 +1,37 @@
-import Answer from "./Answer.js";
+import Button from "./Button.js";
 import Candidate from "./Candidate.js";
-import ChoiceQuestion from "./ChoiceQuestion.js";
-import Pod from "./Pod.js";
+import InputsManager from "./InputsManager.js";
 
-export class MatchingModal {
+export default class MatchingModal {
     constructor(candidateSummaryDate) {
         this.element = document.createElement("div");
         this.textElement = document.createElement("p");
         this.main = document.querySelector("main");
-        this.bttnElement = document.createElement("button");
         this.candidateSummaryDate = candidateSummaryDate;
     }
 
-    createElement() {
+    createElement(onReset) {
         this.element.classList.add("matchingModalWrapper");
 
-        this.textElement.classList.add("matchingModalTitle");
+        this.textElement.classList.add("matchingModalTitle","matchingModalTitle_decoration");
         this.textElement.textContent = "C'est le match !";
         this.element.appendChild(this.textElement);
 
-        const littlePod = new Pod().createElement();
-        littlePod.classList.add("matchingModalPod");
-        this.element.appendChild(littlePod);
+        const pod = document.querySelector(".pod");
+        pod.classList.add("matchingModalPod");
 
-        // todo: dynamically get candidate name;
-        const nameElement = document.createElement("p");
-        nameElement.textContent = "paul"; 
-        this.element.appendChild(nameElement)
-        
+        const podWrapper = document.querySelector(".podWrapper");
+        this.element.appendChild(podWrapper);
+
         this.element.appendChild(this.createDateSummary());
         
-        this.bttnElement.classList.add("multipleChoiceInput");
-        this.bttnElement.textContent = "Recommencer";
-        this.element.appendChild(this.bttnElement);
+        const bttnElement = new Button("Recommencer",() => {  
+            this.main.removeChild(this.element);
+            onReset();
+        }, "theme_alt");
+        new InputsManager().displayInput([bttnElement],this.element);
 
         this.main.appendChild(this.element);
-        return this.main;
     }
 
     createDateSummary() {
@@ -47,9 +43,9 @@ export class MatchingModal {
         })
 
         const favAnswerElement = this.#appendElement("div",["favAnswer","dateRecapSpace"], null, dateRecapWrapperElement); 
-            this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
-            this.#appendElement("p", [null],  this.candidateSummaryDate.favQuestion, favAnswerElement);
-
+        this.#appendElement("p", ["titleUnderline"], "Réponse coup de coeur", favAnswerElement);
+        this.#appendElement("p", [null],  this.candidateSummaryDate.favQuestion, favAnswerElement);
+        this.#appendElement("p", [null],  this.candidateSummaryDate.favAnswer, favAnswerElement);
         return dateRecapWrapperElement;
     }
 
@@ -60,12 +56,10 @@ export class MatchingModal {
         element.textContent = elementContent;
        
         if (parentElement) {
-            return parentElement.appendChild(element)
-        } 
+            return parentElement.appendChild(element);
+        }; 
         
         return element;
     }
-
-}
-
+};
 

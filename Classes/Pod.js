@@ -1,10 +1,13 @@
+import Candidate from "./Candidate.js";
+
 export default class Pod {
-    constructor () {   
+    constructor() {   
         if (!!Pod.instance) {
             return Pod.instance;
-        }
+        };
 
         this.main = document.querySelector("main");
+        this.elementTitle =  document.createElement("p")
         this.state = [
             "off",
             "joining",
@@ -20,10 +23,24 @@ export default class Pod {
     }
 
     createElement() {
+        const elementWrapper = document.createElement("div");
+        elementWrapper.classList.add("podWrapper");
+
         const element = document.createElement("div");
         element.classList.add("pod", this.currentState);
-        this.main.appendChild(element);
-        return element;
+        elementWrapper.appendChild(element);
+        
+        this.elementTitle.classList.add("matchingModalTitle");
+        elementWrapper.appendChild(this.elementTitle);
+        
+        this.main.appendChild(elementWrapper);
+
+        return elementWrapper;
+    }
+
+    setTitle(candidateName) {
+        this.elementTitle.textContent = candidateName;
+        return this.elementTitle;
     }
 
     changeState(value) {  
@@ -34,5 +51,4 @@ export default class Pod {
         });    
         this.currentState = value;
     }  
-}
-
+};

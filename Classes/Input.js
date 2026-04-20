@@ -1,8 +1,8 @@
 export default class Input {
     #onEnter;
-    constructor (onEnter) {
+    constructor(onEnter) {
         this.#onEnter = onEnter;
-    };
+    }
 
     createElement() {
         const input = document.createElement("input");
@@ -13,7 +13,7 @@ export default class Input {
             };
         });
         return input;
-    };
+    }
 };
 
 
